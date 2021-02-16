@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import { TertiaryItem } from "./TertiaryItem";
+import { TertiaryItem } from './TertiaryItem'
 
 /**
  * 中項目チケット

@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import { SecondaryItem } from "./SecondaryItem";
+import { SecondaryItem } from './SecondaryItem'
 
 /**
  * 大項目チケット
@@ -10,7 +10,7 @@ import { SecondaryItem } from "./SecondaryItem";
 export class PrimaryItem {
   readonly id: string
   public name = ''
-  public tertiaryItems: SecondaryItem[] = []
+  public secondaryItems: SecondaryItem[] = []
 
   constructor() {
     this.id = shortid()
