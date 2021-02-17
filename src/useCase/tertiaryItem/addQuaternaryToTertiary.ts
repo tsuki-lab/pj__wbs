@@ -9,5 +9,5 @@ import { QuaternaryItem } from '@/model/QuaternaryItem'
  */
 export function addQuaternaryToTertiary(target: TertiaryItem) {
   const item = new QuaternaryItem()
-  target.quaternaryItems.push(item)
+  target.children.push(item)
 }
