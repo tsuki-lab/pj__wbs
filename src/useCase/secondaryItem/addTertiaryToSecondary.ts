@@ -9,5 +9,5 @@ import { TertiaryItem } from '@/model/TertiaryItem'
  */
 export function addTertiaryToSecondary(target: SecondaryItem) {
   const item = new TertiaryItem()
-  target.tertiaryItems.push(item)
+  target.children.push(item)
 }

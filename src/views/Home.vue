@@ -1,47 +1,68 @@
 <template>
   <div class="home">
-    {{message}}
-    <div v-for="(item, i) in items" :key="i">
-      <hr>
-      <h2>{{ item.id }}</h2>
-      <p>
-        <button @click="addSecondaryToPrimary(item)">>></button>
-      </p>
-      <ul>
-        <li v-for="(secondaryItem, ii) in item.secondaryItems" :key="ii">
-          {{ secondaryItem.id }}
-        </li>
-      </ul>
-    </div>
-    <p>
-      <button @click="addPrimaryItem">></button>
-    </p>
+    <button @click="addPrimaryItem">
+      大項目追加
+    </button>
+    <ul>
+      <li v-for="primaryItem in primaryItems" :key="primaryItem.id">
+        {{ primaryItem.id }}
+        <button @click="addSecondaryToPrimary(primaryItem)">
+          中項目追加
+        </button>
+        <ul>
+          <li v-for="secondaryItem in primaryItem.children" :key="secondaryItem.id">
+            {{ secondaryItem.id }}
+            <button @click="addTertiaryToSecondary(secondaryItem)">
+              小項目追加
+            </button>
+            <ul>
+              <li v-for="tertiaryItem in secondaryItem.children" :key="tertiaryItem.id">
+                {{ tertiaryItem.id }}
+                <button @click="addQuaternaryToTertiary(tertiaryItem)">
+                  詳細項目追加
+                </button>
+                <ul>
+                  <li v-for="quaternaryItem in tertiaryItem.children" :key="quaternaryItem.id">
+                    {{ quaternaryItem.id }}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { itemStore } from '../store/ItemStore';
+
+const {
+  addPrimaryItem,
+  addSecondaryToPrimary,
+  addTertiaryToSecondary,
+  addQuaternaryToTertiary
+} = itemStore
 
 export default defineComponent({
   name: 'Home',
   setup() {
-    const {
+    return {
+      primaryItems: computed(() => itemStore.primaryItems),
       addPrimaryItem,
       addSecondaryToPrimary,
       addTertiaryToSecondary,
       addQuaternaryToTertiary
-    } = itemStore
-    const items = ref(itemStore.items)
-
-    return {
-      items,
-      addPrimaryItem,
-      addSecondaryToPrimary,
-      addTertiaryToSecondary,
-      addQuaternaryToTertiary,
-      message: 'Hello'
     }
   }
 });
 </script>
+
+<style scoped>
+  ul {
+    border: 1px solid #666;
+    margin: .5rem;
+  }
+</style>
