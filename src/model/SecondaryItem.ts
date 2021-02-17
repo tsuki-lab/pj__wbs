@@ -10,7 +10,7 @@ import { TertiaryItem } from './TertiaryItem'
 export class SecondaryItem {
   readonly id: string
   public name = ''
-  public tertiaryItems: TertiaryItem[] = []
+  public children: TertiaryItem[] = []
 
   constructor() {
     this.id = shortid()

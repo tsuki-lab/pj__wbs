@@ -13,7 +13,7 @@ export class TertiaryItem {
   public manDay = ''
   public description = ''
   public category = ''
-  public quaternaryItems: QuaternaryItem[] = []
+  public children: QuaternaryItem[] = []
 
   constructor() {
     this.id = shortid()
