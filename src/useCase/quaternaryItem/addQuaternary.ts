@@ -1,13 +1,15 @@
-import { TertiaryItem } from '@/model/TertiaryItem'
 import { QuaternaryItem } from '@/model/QuaternaryItem'
 
 /**
- * 小項目に詳細項目を追加する
+ * 詳細項目を配列の最後尾に追加
  *
  * @export
- * @param {TertiaryItem} target 追加対象の小項目
+ * @param {QuaternaryItem[]} _items
+ * @return {*}  {QuaternaryItem[]}
  */
-export function addQuaternaryItem(target: TertiaryItem) {
+export function addQuaternaryItem(_items: QuaternaryItem[]): QuaternaryItem[] {
+  const items = _items.slice()
   const item = new QuaternaryItem()
-  target.children.push(item)
+  items.push(item)
+  return items
 }

@@ -1,13 +1,15 @@
-import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 
 /**
- * 大項目に中項目を追加する
+ * 中項目を配列の最後尾に追加
  *
  * @export
- * @param {PrimaryItem} target 追加対象の大項目
+ * @param {SecondaryItem[]} _items
+ * @return {*}  {SecondaryItem[]}
  */
-export function addSecondaryItem(target: PrimaryItem) {
+export function addSecondaryItem(_items: SecondaryItem[]): SecondaryItem[] {
+  const items = _items.slice()
   const item = new SecondaryItem()
-  target.children.push(item)
+  items.push(item)
+  return items
 }

@@ -15,28 +15,28 @@
                   </li>
                 </ul>
                 <p>
-                  <button @click="addQuaternaryItem(tertiaryItem)">
+                  <button @click="addQuaternaryToTertiaryChild(tertiaryItem)">
                     詳細項目追加
                   </button>
                 </p>
               </li>
             </ul>
             <p>
-              <button @click="addTertiaryItem(secondaryItem)">
+              <button @click="addTertiaryToSecondaryChild(secondaryItem)">
                 小項目追加
               </button>
             </p>
           </li>
         </ul>
         <p>
-          <button @click="addSecondaryItem(primaryItem)">
+          <button @click="addSecondaryToPrimaryChild(primaryItem)">
             中項目追加
           </button>
         </p>
       </li>
     </ul>
     <p>
-      <button @click="addPrimaryItem">
+      <button @click="addPrimaryToState">
         大項目追加
       </button>
     </p>
@@ -48,10 +48,10 @@ import { defineComponent, computed } from 'vue';
 import { itemStore } from '@/store/ItemStore';
 
 const {
-  addPrimaryItem,
-  addSecondaryItem,
-  addTertiaryItem,
-  addQuaternaryItem
+  addPrimaryToState,
+  addSecondaryToPrimaryChild,
+  addTertiaryToSecondaryChild,
+  addQuaternaryToTertiaryChild
 } = itemStore
 
 export default defineComponent({
@@ -59,10 +59,10 @@ export default defineComponent({
   setup() {
     return {
       primaryItems: computed(() => itemStore.primaryItems),
-      addPrimaryItem,
-      addSecondaryItem,
-      addTertiaryItem,
-      addQuaternaryItem
+      addPrimaryToState,
+      addSecondaryToPrimaryChild,
+      addTertiaryToSecondaryChild,
+      addQuaternaryToTertiaryChild
     }
   }
 });

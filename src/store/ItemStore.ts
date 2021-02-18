@@ -3,6 +3,7 @@ import { Module, VuexModule, getModule, Action, Mutation } from 'vuex-module-dec
 import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
+import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
 import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondary'
 import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiary'
 import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternary'
@@ -29,12 +30,10 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addPrimaryItem() {
-    const items = this.primaryItems.slice()
-    const item = new PrimaryItem()
-    items.push(item)
+  public async addPrimaryToState() {
+    const result = addPrimaryItem(this.primaryItems)
 
-    this.commitPrimaryItems(items)
+    this.commitPrimaryItems(result)
   }
 
   /**
@@ -44,8 +43,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addSecondaryItem(target: PrimaryItem) {
-    addSecondaryItem(target)
+  public async addSecondaryToPrimaryChild(target: PrimaryItem) {
+    target.children = addSecondaryItem(target.children)
 
     this.commitPrimaryItems(this.primaryItems)
   }
@@ -57,8 +56,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addTertiaryItem(target: SecondaryItem) {
-    addTertiaryItem(target)
+  public async addTertiaryToSecondaryChild(target: SecondaryItem) {
+    target.children = addTertiaryItem(target.children)
 
     this.commitPrimaryItems(this.primaryItems)
   }
@@ -70,8 +69,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addQuaternaryItem(target: TertiaryItem) {
-    addQuaternaryItem(target)
+  public async addQuaternaryToTertiaryChild(target: TertiaryItem) {
+    target.children = addQuaternaryItem(target.children)
 
     this.commitPrimaryItems(this.primaryItems)
   }
