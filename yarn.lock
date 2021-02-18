@@ -3097,6 +3097,11 @@ destroy@~1.0.4:
   resolved "https://registry.npm.taobao.org/destroy/download/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
+destyle.css@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/destyle.css/-/destyle.css-2.0.2.tgz#62ab5aff32ce527b7fa624aab36d1c11a86b6011"
+  integrity sha512-w2xDMPePSAdSuz0h7Ad0m4QITlF1iG4U+0C0Y6Z5w05IBUHYOP3p7QyiZcc3OY+NcJiXBPgfARUsc5zfCGoahA==
+
 detect-newline@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/detect-newline/download/detect-newline-2.1.0.tgz#f41f1c10be4b00e87b5f13da680759f2c5bfd3e2"
