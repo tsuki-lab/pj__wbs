@@ -3,9 +3,9 @@ import { Module, VuexModule, getModule, Action, Mutation } from 'vuex-module-dec
 import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
-import { addSecondaryToPrimary } from '@/useCase/primaryItem/addSecondaryToPrimary'
-import { addTertiaryToSecondary } from '@/useCase/secondaryItem/addTertiaryToSecondary'
-import { addQuaternaryToTertiary } from '@/useCase/tertiaryItem/addQuaternaryToTertiary'
+import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondary'
+import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiary'
+import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternary'
 
 /**
  * 項目管理ストア
@@ -44,8 +44,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addSecondaryToPrimary(target: PrimaryItem) {
-    addSecondaryToPrimary(target)
+  public async addSecondaryItem(target: PrimaryItem) {
+    addSecondaryItem(target)
 
     this.commitPrimaryItems(this.primaryItems)
   }
@@ -57,8 +57,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addTertiaryToSecondary(target: SecondaryItem) {
-    addTertiaryToSecondary(target)
+  public async addTertiaryItem(target: SecondaryItem) {
+    addTertiaryItem(target)
 
     this.commitPrimaryItems(this.primaryItems)
   }
@@ -70,8 +70,8 @@ class ItemStore extends VuexModule {
    * @memberof ItemStore
    */
   @Action
-  public async addQuaternaryToTertiary(target: TertiaryItem) {
-    addQuaternaryToTertiary(target)
+  public async addQuaternaryItem(target: TertiaryItem) {
+    addQuaternaryItem(target)
 
     this.commitPrimaryItems(this.primaryItems)
   }

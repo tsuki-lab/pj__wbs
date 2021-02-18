@@ -7,7 +7,7 @@ import { QuaternaryItem } from '@/model/QuaternaryItem'
  * @export
  * @param {TertiaryItem} target 追加対象の小項目
  */
-export function addQuaternaryToTertiary(target: TertiaryItem) {
+export function addQuaternaryItem(target: TertiaryItem) {
   const item = new QuaternaryItem()
   target.children.push(item)
 }

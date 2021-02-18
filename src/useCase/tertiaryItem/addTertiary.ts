@@ -7,7 +7,7 @@ import { TertiaryItem } from '@/model/TertiaryItem'
  * @export
  * @param {SecondaryItem} target 追加対象の中項目
  */
-export function addTertiaryToSecondary(target: SecondaryItem) {
+export function addTertiaryItem(target: SecondaryItem) {
   const item = new TertiaryItem()
   target.children.push(item)
 }

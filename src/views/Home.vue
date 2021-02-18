@@ -15,21 +15,21 @@
                   </li>
                 </ul>
                 <p>
-                  <button @click="addQuaternaryToTertiary(tertiaryItem)">
+                  <button @click="addQuaternaryItem(tertiaryItem)">
                     詳細項目追加
                   </button>
                 </p>
               </li>
             </ul>
             <p>
-              <button @click="addTertiaryToSecondary(secondaryItem)">
+              <button @click="addTertiaryItem(secondaryItem)">
                 小項目追加
               </button>
             </p>
           </li>
         </ul>
         <p>
-          <button @click="addSecondaryToPrimary(primaryItem)">
+          <button @click="addSecondaryItem(primaryItem)">
             中項目追加
           </button>
         </p>
@@ -45,13 +45,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { itemStore } from '../store/ItemStore';
+import { itemStore } from '@/store/ItemStore';
 
 const {
   addPrimaryItem,
-  addSecondaryToPrimary,
-  addTertiaryToSecondary,
-  addQuaternaryToTertiary
+  addSecondaryItem,
+  addTertiaryItem,
+  addQuaternaryItem
 } = itemStore
 
 export default defineComponent({
@@ -60,9 +60,9 @@ export default defineComponent({
     return {
       primaryItems: computed(() => itemStore.primaryItems),
       addPrimaryItem,
-      addSecondaryToPrimary,
-      addTertiaryToSecondary,
-      addQuaternaryToTertiary
+      addSecondaryItem,
+      addTertiaryItem,
+      addQuaternaryItem
     }
   }
 });
