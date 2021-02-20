@@ -38,10 +38,10 @@ class SecondaryStore extends VuexModule {
     this.commitSecondaryItems(result)
   }
 
-  /** 中項目を削除 */
+  /** 中項目を複数削除 */
   @Action
-  public async deleteSecondaryFromState(targetId: string) {
-    const result = deleteSecondary(this.secondaryItems, targetId)
+  public async deleteSecondariesFromState({ targetIds }: { targetIds: string[] }) {
+    const result = deleteSecondary(this.secondaryItems, ...targetIds)
 
     this.commitSecondaryItems(result)
   }

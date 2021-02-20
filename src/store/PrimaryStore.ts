@@ -27,11 +27,10 @@ class PrimaryStore extends VuexModule {
     this.commitPrimaryItems(result)
   }
 
-  /** 大項目を削除 */
+  /** 大項目を複数削除 */
   @Action
-  public async deletePrimaryFromState(targetId: string) {
-    const result = deletePrimaryItem(this.primaryItems, targetId)
-
+  public async deletePrimariesFromState({ targetIds }: { targetIds: string[] }) {
+    const result = deletePrimaryItem(this.primaryItems, ...targetIds)
     this.commitPrimaryItems(result)
   }
 

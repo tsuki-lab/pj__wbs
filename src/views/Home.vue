@@ -17,7 +17,7 @@
           >
           <button
             class="button-close w-6 h-6 mr-4"
-            @click="deletePrimaryFromState(primaryItem.id)"
+            @click="deletePrimaryItem(primaryItem.id)"
           />
         </div>
         <ul v-show="0 < secondaryItemsByParentId(primaryItem.id).length">
@@ -34,7 +34,7 @@
               >
               <button
                 class="button-close w-6 h-6 mr-4"
-                @click="deleteSecondaryFromState(secondaryItem.id)"
+                @click="deleteSecondaryItem(secondaryItem.id)"
               />
             </div>
             <ul v-show="0 < tertiaryItemsByParentId(secondaryItem.id).length">
@@ -65,7 +65,7 @@
                   </div>
                   <button
                     class="button-close w-6 h-6 mr-4"
-                    @click="deleteTertiaryFromState(tertiaryItem.id)"
+                    @click="deleteTertiaryItem(tertiaryItem.id)"
                   />
                 </div>
                 <ul v-show="0 < quaternaryItemsByParentId(tertiaryItem.id).length">
@@ -116,7 +116,7 @@
                       </div>
                       <button
                         class="button-close w-6 h-6 mr-4"
-                        @click="deleteQuaternaryFromState(quaternaryItem.id)"
+                        @click="deleteQuaternaryItem(quaternaryItem.id)"
                       />
                     </div>
                   </li>
@@ -125,19 +125,19 @@
                   <template v-if="iii === tertiaryItemsByParentId(secondaryItem.id).length - 1">
                     <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
                       <template v-if="i === primaryItems.length - 1">
-                        <button @click="addPrimaryToState">
+                        <button @click="addPrimaryItem">
                           大項目追加
                         </button>
                       </template>
-                      <button @click="addSecondaryToState(primaryItem)">
+                      <button @click="addSecondaryItem(primaryItem)">
                         中項目追加
                       </button>
                     </template>
-                    <button @click="addTertiaryToState(secondaryItem)">
+                    <button @click="addTertiaryItem(secondaryItem)">
                       小項目追加
                     </button>
                   </template>
-                  <button @click="addQuaternaryToState(tertiaryItem)">
+                  <button @click="addQuaternaryItem(tertiaryItem)">
                     詳細項目追加
                   </button>
                 </div>
@@ -147,15 +147,15 @@
               <template v-if="tertiaryItemsByParentId(secondaryItem.id).length < 1">
                 <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
                   <template v-if="i === primaryItems.length - 1">
-                    <button @click="addPrimaryToState">
+                    <button @click="addPrimaryItem">
                       大項目追加
                     </button>
                   </template>
-                  <button @click="addSecondaryToState(primaryItem)">
+                  <button @click="addSecondaryItem(primaryItem)">
                     中項目追加
                   </button>
                 </template>
-                <button @click="addTertiaryToState(secondaryItem)">
+                <button @click="addTertiaryItem(secondaryItem)">
                   小項目追加
                 </button>
               </template>
@@ -165,11 +165,11 @@
         <div class="flex justify-end mx-2">
           <template v-if="secondaryItemsByParentId(primaryItem.id).length < 1">
             <template v-if="i === primaryItems.length - 1">
-              <button @click="addPrimaryToState">
+              <button @click="addPrimaryItem">
                 大項目追加
               </button>
             </template>
-            <button @click="addSecondaryToState(primaryItem)">
+            <button @click="addSecondaryItem(primaryItem)">
               中項目追加
             </button>
           </template>
@@ -178,7 +178,7 @@
     </ul>
     <div class="flex justify-end mx-2">
       <template v-if="primaryItems.length < 1">
-        <button @click="addPrimaryToState">
+        <button @click="addPrimaryItem">
           大項目追加
         </button>
       </template>
@@ -195,25 +195,25 @@ import { quaternaryStore } from '@/store/QuaternaryStore'
 
 const {
   addPrimaryToState,
-  deletePrimaryFromState,
+  deletePrimariesFromState,
 } = primaryStore
 
 const {
   addSecondaryToState,
   secondaryItemsByParentId,
-  deleteSecondaryFromState
+  deleteSecondariesFromState
 } = secondaryStore
 
 const {
   addTertiaryToState,
   tertiaryItemsByParentId,
-  deleteTertiaryFromState
+  deleteTertiariesFromState
 } = tertiaryStore
 
 const {
   addQuaternaryToState,
   quaternaryItemsByParentId,
-  deleteQuaternaryFromState
+  deleteQuaternariesFromState
 } = quaternaryStore
 
 export default defineComponent({
@@ -222,17 +222,25 @@ export default defineComponent({
     return {
       primaryItems: computed(() => primaryStore.primaryItems),
       quaternaryItems: computed(() => quaternaryStore.quaternaryItems),
-      addPrimaryToState,
-      addSecondaryToState,
-      addTertiaryToState,
-      addQuaternaryToState,
+      addPrimaryItem: addPrimaryToState,
+      addSecondaryItem: addSecondaryToState,
+      addTertiaryItem: addTertiaryToState,
+      addQuaternaryItem: addQuaternaryToState,
       secondaryItemsByParentId,
       tertiaryItemsByParentId,
       quaternaryItemsByParentId,
-      deletePrimaryFromState,
-      deleteSecondaryFromState,
-      deleteTertiaryFromState,
-      deleteQuaternaryFromState
+      deletePrimaryItem: (targetId: string) => {
+        deletePrimariesFromState({ targetIds: [ targetId ]})
+      },
+      deleteSecondaryItem: (targetId: string) => {
+        deleteSecondariesFromState({ targetIds: [ targetId ]})
+      },
+      deleteTertiaryItem: (targetId: string) => {
+        deleteTertiariesFromState({ targetIds: [ targetId ]})
+      },
+      deleteQuaternaryItem: (targetId: string) => {
+        deleteQuaternariesFromState({ targetIds: [ targetId ] })
+      }
     }
   }
 });

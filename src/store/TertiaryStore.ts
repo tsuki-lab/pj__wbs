@@ -38,10 +38,10 @@ class TertiaryStore extends VuexModule {
     this.commitTertiaryItems(result)
   }
 
-  /** 小項目を削除 */
+  /** 小項目を複数削除 */
   @Action
-  public async deleteTertiaryFromState(targetId: string) {
-    const result = deleteTertiary(this.tertiaryItems, targetId)
+  public async deleteTertiariesFromState({ targetIds }: { targetIds: string[] }) {
+    const result = deleteTertiary(this.tertiaryItems, ...targetIds)
 
     this.commitTertiaryItems(result)
   }
