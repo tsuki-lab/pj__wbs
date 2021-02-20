@@ -1,16 +1,9 @@
 import shortid from 'shortid'
-import { SecondaryItem } from './SecondaryItem'
 
-/**
- * 大項目チケット
- *
- * @export
- * @class PrimaryItem
- */
+/** Model: 大項目 */
 export class PrimaryItem {
   readonly id: string
   public name = ''
-  public children: SecondaryItem[] = []
 
   constructor() {
     this.id = shortid()

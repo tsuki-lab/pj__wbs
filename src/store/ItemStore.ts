@@ -1,8 +1,13 @@
 import store from '@/store'
 import { Module, VuexModule, getModule, Action, Mutation } from 'vuex-module-decorators'
+
+// Models
 import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
+import { QuaternaryItem } from '@/model/QuaternaryItem'
+
+// useCases
 import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
 import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondary'
 import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiary'
@@ -20,129 +25,127 @@ import { deleteQuaternary } from '@/useCase/quaternaryItem/deleteQuaternary'
  */
 @Module({ dynamic: true, store, name: 'ItemStore' })
 class ItemStore extends VuexModule {
-  /**
-   * 大項目一覧
-   *
-   * @type {PrimaryItem[]}
-   * @memberof ItemStore
-   */
+  /** 大項目一覧 */
   public primaryItems: PrimaryItem[] = []
+  /** 中項目一覧 */
+  public secondaryItems: SecondaryItem[] = []
+  /** 小項目一覧 */
+  public tertiaryItems: TertiaryItem[] = []
+  /** 詳細項目一覧 */
+  public quaternaryItems: QuaternaryItem[] = []
 
-  /**
-   * 大項目を追加する
-   *
-   * @memberof ItemStore
-   */
+  /** parentIdで絞り込んだ中項目一覧 */
+  public get secondaryItemsByParentId() {
+    return (parentId: string) => {
+      return this.secondaryItems.filter(v => {
+        return v.parentId === parentId
+      })
+    }
+  }
+
+  /** parentIdで絞り込んだ小項目一覧 */
+  public get tertiaryItemsByParentId() {
+    return (parentId: string) => {
+      return this.tertiaryItems.filter(v => {
+        return v.parentId === parentId
+      })
+    }
+  }
+
+  /** parentIdで絞り込んだ詳細項目一覧 */
+  public get quaternaryItemsByParentId() {
+    return (parentId: string) => {
+      return this.quaternaryItems.filter(v => {
+        return v.parentId === parentId
+      })
+    }
+  }
+
+  /** 大項目を追加 */
   @Action
   public async addPrimaryToState() {
     const result = addPrimaryItem(this.primaryItems)
+    this.commitPrimaryItems(result)
+  }
+
+  /** 中項目を追加 */
+  @Action
+  public async addSecondaryToState(target: PrimaryItem) {
+    const result = addSecondaryItem(this.secondaryItems, target.id)
+
+    this.commitSecondaryItems(result)
+  }
+
+  /** 小項目を追加 */
+  @Action
+  public async addTertiaryToState(target: SecondaryItem) {
+    const result = addTertiaryItem(this.tertiaryItems, target.id)
+
+    this.commitTertiaryItems(result)
+  }
+
+  /** 詳細項目を追加 */
+  @Action
+  public async addQuaternaryToState(target: TertiaryItem) {
+    const result = addQuaternaryItem(this.quaternaryItems, target.id)
+
+    this.commitQuaternaryItems(result)
+  }
+
+  /** 大項目を削除 */
+  @Action
+  public async deletePrimaryFromState(targetId: string) {
+    const result = deletePrimaryItem(this.primaryItems, targetId)
 
     this.commitPrimaryItems(result)
   }
 
-  /**
-   * 大項目に中項目を追加する
-   *
-   * @param {PrimaryItem} target
-   * @memberof ItemStore
-   */
+  /** 中項目を削除 */
   @Action
-  public async addSecondaryToPrimaryChild(target: PrimaryItem) {
-    target.children = addSecondaryItem(target.children)
+  public async deleteSecondaryFromState(targetId: string) {
+    const result = deleteSecondary(this.secondaryItems, targetId)
 
-    this.commitPrimaryItems(this.primaryItems)
+    this.commitSecondaryItems(result)
   }
 
-  /**
-   * 中項目に小項目を追加する
-   *
-   * @param {SecondaryItem} target
-   * @memberof ItemStore
-   */
+  /** 小項目を削除 */
   @Action
-  public async addTertiaryToSecondaryChild(target: SecondaryItem) {
-    target.children = addTertiaryItem(target.children)
+  public async deleteTertiaryFromState(targetId: string) {
+    const result = deleteTertiary(this.tertiaryItems, targetId)
 
-    this.commitPrimaryItems(this.primaryItems)
+    this.commitTertiaryItems(result)
   }
 
-  /**
-   * 小項目に詳細項目を追加する
-   *
-   * @param {TertiaryItem} target
-   * @memberof ItemStore
-   */
+  /** 詳細項目を削除 */
   @Action
-  public async addQuaternaryToTertiaryChild(target: TertiaryItem) {
-    target.children = addQuaternaryItem(target.children)
+  public async deleteQuaternaryFromState(targetId: string) {
+    const result = deleteQuaternary(this.quaternaryItems, targetId)
 
-    this.commitPrimaryItems(this.primaryItems)
+    this.commitQuaternaryItems(result)
   }
 
-  /**
-   * stateから大項目を削除する
-   *
-   * @param {string} deleteId
-   * @memberof ItemStore
-   */
-  @Action
-  public async deletePrimaryFromState({ deleteId }: { deleteId: string }) {
-    const result = deletePrimaryItem(this.primaryItems, deleteId)
-
-    this.commitPrimaryItems(result)
-  }
-
-  /**
-   * 大項目から中項目から削除する
-   *
-   * @param {PrimaryItem} target
-   * @param {string} deleteId
-   * @memberof ItemStore
-   */
-  @Action
-  public async deleteSecondaryFromPrimaryChild({ target, deleteId }: { target: PrimaryItem; deleteId: string }) {
-    target.children = deleteSecondary(target.children, deleteId)
-
-    this.commitPrimaryItems(this.primaryItems)
-  }
-
-  /**
-   * 中項目から小項目から削除する
-   *
-   * @param {SecondaryItem} target
-   * @param {string} deleteId
-   * @memberof ItemStore
-   */
-  @Action
-  public async deleteTertiaryFromSecondaryChild({ target, deleteId }: { target: SecondaryItem; deleteId: string }) {
-    target.children = deleteTertiary(target.children, deleteId)
-
-    this.commitPrimaryItems(this.primaryItems)
-  }
-
-  /**
-   * 小項目から詳細項目を削除する
-   *
-   * @param {TertiaryItem} target
-   * @param {string} deleteId
-   * @memberof ItemStore
-   */
-  @Action
-  public async deleteQuaternaryFromTertiaryChild({ target, deleteId }: { target: TertiaryItem; deleteId: string }) {
-    target.children = deleteQuaternary(target.children, deleteId)
-
-    this.commitPrimaryItems(this.primaryItems)
-  }
-
-  /**
-   * stateの大項目を更新する。
-   *
-   * @param {PrimaryItem[]} items
-   * @memberof ItemStore
-   */
+  /** stateの大項目一覧を更新 */
   @Mutation
   private commitPrimaryItems(items: PrimaryItem[]) {
     this.primaryItems = items
+  }
+
+  /** stateの中項目一覧を更新 */
+  @Mutation
+  private commitSecondaryItems(items: SecondaryItem[]) {
+    this.secondaryItems = items
+  }
+
+  /** stateの小項目一覧を更新 */
+  @Mutation
+  private commitTertiaryItems(items: TertiaryItem[]) {
+    this.tertiaryItems = items
+  }
+
+  /** stateの詳細項目一覧を更新 */
+  @Mutation
+  private commitQuaternaryItems(items: QuaternaryItem[]) {
+    this.quaternaryItems = items
   }
 }
 

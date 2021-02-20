@@ -20,9 +20,9 @@
             @click="deletePrimaryFromState(primaryItem.id)"
           />
         </div>
-        <ul v-show="0 < primaryItem.children.length">
+        <ul v-show="0 < secondaryItemsByParentId(primaryItem.id).length">
           <li
-            v-for="(secondaryItem, ii) in primaryItem.children"
+            v-for="(secondaryItem, ii) in secondaryItemsByParentId(primaryItem.id)"
             :key="secondaryItem.id"
             class="ml-8"
           >
@@ -34,12 +34,12 @@
               >
               <button
                 class="button-close w-6 h-6 mr-4"
-                @click="deleteSecondaryFromPrimaryChild(primaryItem, secondaryItem.id)"
+                @click="deleteSecondaryFromState(secondaryItem.id)"
               />
             </div>
-            <ul v-show="0 < secondaryItem.children.length">
+            <ul v-show="0 < tertiaryItemsByParentId(secondaryItem.id).length">
               <li
-                v-for="(tertiaryItem, iii) in secondaryItem.children"
+                v-for="(tertiaryItem, iii) in tertiaryItemsByParentId(secondaryItem.id)"
                 :key="tertiaryItem.id"
                 class="ml-8"
               >
@@ -65,12 +65,12 @@
                   </div>
                   <button
                     class="button-close w-6 h-6 mr-4"
-                    @click="deleteTertiaryFromSecondaryChild(secondaryItem, tertiaryItem.id)"
+                    @click="deleteTertiaryFromState(tertiaryItem.id)"
                   />
                 </div>
-                <ul v-show="0 < tertiaryItem.children.length">
+                <ul v-show="0 < quaternaryItemsByParentId(tertiaryItem.id).length">
                   <li
-                    v-for="quaternaryItem in tertiaryItem.children"
+                    v-for="quaternaryItem in quaternaryItemsByParentId(tertiaryItem.id)"
                     :key="quaternaryItem.id"
                     class="ml-8"
                   >
@@ -97,46 +97,46 @@
                       </div>
                       <button
                         class="button-close w-6 h-6 mr-4"
-                        @click="deleteQuaternaryFromTertiaryChild(tertiaryItem, quaternaryItem.id)"
+                        @click="deleteQuaternaryFromState(quaternaryItem.id)"
                       />
                     </div>
                   </li>
                 </ul>
                 <div class="flex justify-end mx-2">
-                  <template v-if="iii === secondaryItem.children.length - 1">
-                    <template v-if="ii === primaryItem.children.length - 1">
+                  <template v-if="iii === tertiaryItemsByParentId(secondaryItem.id).length - 1">
+                    <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
                       <template v-if="i === primaryItems.length - 1">
                         <button @click="addPrimaryToState">
                           大項目追加
                         </button>
                       </template>
-                      <button @click="addSecondaryToPrimaryChild(primaryItem)">
+                      <button @click="addSecondaryToState(primaryItem)">
                         中項目追加
                       </button>
                     </template>
-                    <button @click="addTertiaryToSecondaryChild(secondaryItem)">
+                    <button @click="addTertiaryToState(secondaryItem)">
                       小項目追加
                     </button>
                   </template>
-                  <button @click="addQuaternaryToTertiaryChild(tertiaryItem)">
+                  <button @click="addQuaternaryToState(tertiaryItem)">
                     詳細項目追加
                   </button>
                 </div>
               </li>
             </ul>
             <div class="flex justify-end mx-2">
-              <template v-if="secondaryItem.children.length < 1">
-                <template v-if="ii === primaryItem.children.length - 1">
+              <template v-if="tertiaryItemsByParentId(secondaryItem.id).length < 1">
+                <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
                   <template v-if="i === primaryItems.length - 1">
                     <button @click="addPrimaryToState">
                       大項目追加
                     </button>
                   </template>
-                  <button @click="addSecondaryToPrimaryChild(primaryItem)">
+                  <button @click="addSecondaryToState(primaryItem)">
                     中項目追加
                   </button>
                 </template>
-                <button @click="addTertiaryToSecondaryChild(secondaryItem)">
+                <button @click="addTertiaryToState(secondaryItem)">
                   小項目追加
                 </button>
               </template>
@@ -144,13 +144,13 @@
           </li>
         </ul>
         <div class="flex justify-end mx-2">
-          <template v-if="primaryItem.children.length < 1">
+          <template v-if="secondaryItemsByParentId(primaryItem.id).length < 1">
             <template v-if="i === primaryItems.length - 1">
               <button @click="addPrimaryToState">
                 大項目追加
               </button>
             </template>
-            <button @click="addSecondaryToPrimaryChild(primaryItem)">
+            <button @click="addSecondaryToState(primaryItem)">
               中項目追加
             </button>
           </template>
@@ -168,21 +168,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { itemStore } from '@/store/ItemStore';
-import { PrimaryItem } from '@/model/PrimaryItem';
-import { SecondaryItem } from '@/model/SecondaryItem';
-import { TertiaryItem } from '@/model/TertiaryItem';
+import { defineComponent, computed } from 'vue'
+import { itemStore } from '@/store/ItemStore'
 
 const {
   addPrimaryToState,
-  addSecondaryToPrimaryChild,
-  addTertiaryToSecondaryChild,
-  addQuaternaryToTertiaryChild,
+  addSecondaryToState,
+  addTertiaryToState,
+  addQuaternaryToState,
+  secondaryItemsByParentId,
+  tertiaryItemsByParentId,
+  quaternaryItemsByParentId,
   deletePrimaryFromState,
-  deleteSecondaryFromPrimaryChild,
-  deleteTertiaryFromSecondaryChild,
-  deleteQuaternaryFromTertiaryChild
+  deleteSecondaryFromState,
+  deleteTertiaryFromState,
+  deleteQuaternaryFromState
 } = itemStore
 
 export default defineComponent({
@@ -190,22 +190,18 @@ export default defineComponent({
   setup() {
     return {
       primaryItems: computed(() => itemStore.primaryItems),
+      secondaryItems: computed(() => itemStore.secondaryItems),
       addPrimaryToState,
-      addSecondaryToPrimaryChild,
-      addTertiaryToSecondaryChild,
-      addQuaternaryToTertiaryChild,
-      deletePrimaryFromState:(deleteId: string) => {
-        deletePrimaryFromState({ deleteId })
-      },
-      deleteSecondaryFromPrimaryChild:(target: PrimaryItem, deleteId: string) => {
-        deleteSecondaryFromPrimaryChild({ target, deleteId })
-      },
-      deleteTertiaryFromSecondaryChild:(target: SecondaryItem, deleteId: string) => {
-        deleteTertiaryFromSecondaryChild({ target, deleteId })
-      },
-      deleteQuaternaryFromTertiaryChild:(target: TertiaryItem, deleteId: string) => {
-        deleteQuaternaryFromTertiaryChild({ target, deleteId })
-      }
+      addSecondaryToState,
+      addTertiaryToState,
+      addQuaternaryToState,
+      secondaryItemsByParentId,
+      tertiaryItemsByParentId,
+      quaternaryItemsByParentId,
+      deletePrimaryFromState,
+      deleteSecondaryFromState,
+      deleteTertiaryFromState,
+      deleteQuaternaryFromState
     }
   }
 });

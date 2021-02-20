@@ -1,5 +1,13 @@
 import shortid from 'shortid'
-import { TertiaryItem } from './TertiaryItem'
+
+/**
+ * constructorに渡す引数
+ *
+ * @interface InitializeArgs
+ */
+interface InitializeArgs {
+  parentId: string;
+}
 
 /**
  * 中項目チケット
@@ -8,11 +16,12 @@ import { TertiaryItem } from './TertiaryItem'
  * @class SecondaryItem
  */
 export class SecondaryItem {
-  readonly id: string
+  public readonly id: string
+  public readonly parentId: string
   public name = ''
-  public children: TertiaryItem[] = []
 
-  constructor() {
+  constructor(params: InitializeArgs) {
     this.id = shortid()
+    this.parentId = params.parentId
   }
 }

@@ -5,11 +5,12 @@ import { TertiaryItem } from '@/model/TertiaryItem'
  *
  * @export
  * @param {TertiaryItem[]} _items
+ * @param {string} secondaryItemId 中項目ID
  * @return {*}  {TertiaryItem[]}
  */
-export function addTertiaryItem(_items: TertiaryItem[]): TertiaryItem[] {
+export function addTertiaryItem(_items: TertiaryItem[], secondaryItemId: string): TertiaryItem[] {
   const items = _items.slice()
-  const item = new TertiaryItem()
+  const item = new TertiaryItem({ parentId: secondaryItemId })
   items.push(item)
   return items
 }
