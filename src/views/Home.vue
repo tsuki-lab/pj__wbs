@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-4xl ml-4">
+  <h1 class="text-4xl ml-4 font-bold">
     WBS Generator
   </h1>
   <div class="pt-4 text-sm">
