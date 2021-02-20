@@ -74,56 +74,56 @@
                   </li>
                 </ul>
                 <div class="flex justify-end mx-2">
-                  <button @click="addQuaternaryToTertiaryChild(tertiaryItem)">
-                    詳細項目追加
-                  </button>
                   <template v-if="iii === secondaryItem.children.length - 1">
-                    <button @click="addTertiaryToSecondaryChild(secondaryItem)">
-                      小項目追加
-                    </button>
                     <template v-if="ii === primaryItem.children.length - 1">
-                      <button @click="addSecondaryToPrimaryChild(primaryItem)">
-                        中項目追加
-                      </button>
                       <template v-if="i === primaryItems.length - 1">
                         <button @click="addPrimaryToState">
                           大項目追加
                         </button>
                       </template>
+                      <button @click="addSecondaryToPrimaryChild(primaryItem)">
+                        中項目追加
+                      </button>
                     </template>
+                    <button @click="addTertiaryToSecondaryChild(secondaryItem)">
+                      小項目追加
+                    </button>
                   </template>
+                  <button @click="addQuaternaryToTertiaryChild(tertiaryItem)">
+                    詳細項目追加
+                  </button>
                 </div>
               </li>
             </ul>
             <div class="flex justify-end mx-2">
               <template v-if="secondaryItem.children.length < 1">
-                <button @click="addTertiaryToSecondaryChild(secondaryItem)">
-                  小項目追加
-                </button>
                 <template v-if="ii === primaryItem.children.length - 1">
-                  <button @click="addSecondaryToPrimaryChild(primaryItem)">
-                    中項目追加
-                  </button>
                   <template v-if="i === primaryItems.length - 1">
                     <button @click="addPrimaryToState">
                       大項目追加
                     </button>
                   </template>
+                  <button @click="addSecondaryToPrimaryChild(primaryItem)">
+                    中項目追加
+                  </button>
                 </template>
+                <button @click="addTertiaryToSecondaryChild(secondaryItem)">
+                  小項目追加
+                </button>
               </template>
             </div>
           </li>
         </ul>
         <div class="flex justify-end mx-2">
           <template v-if="primaryItem.children.length < 1">
-            <button @click="addSecondaryToPrimaryChild(primaryItem)">
-              中項目追加
-            </button>
             <template v-if="i === primaryItems.length - 1">
               <button @click="addPrimaryToState">
                 大項目追加
               </button>
             </template>
+            <button @click="addSecondaryToPrimaryChild(primaryItem)">
+              中項目追加
+            </button>
           </template>
         </div>
       </li>
