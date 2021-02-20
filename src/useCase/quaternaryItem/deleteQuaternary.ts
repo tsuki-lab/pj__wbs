@@ -6,11 +6,13 @@ import { QuaternaryItem } from '@/model/QuaternaryItem'
  *
  * @export
  * @param {QuaternaryItem[]} _items
- * @param {string} targetId
+ * @param {...string[]} targetIds
  * @return {*}  {QuaternaryItem[]}
  */
-export function deleteQuaternary(_items: QuaternaryItem[], targetId: string): QuaternaryItem[] {
+export function deleteQuaternary(_items: QuaternaryItem[], ...targetIds: string[]): QuaternaryItem[] {
   const items = _items.slice()
-  ArrayUtils.removeByIdFromArray(items, targetId)
+  targetIds.forEach(targetId => {
+    ArrayUtils.removeByIdFromArray(items, targetId)
+  })
   return items
 }

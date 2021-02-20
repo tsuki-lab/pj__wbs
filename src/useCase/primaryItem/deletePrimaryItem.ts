@@ -6,11 +6,13 @@ import { PrimaryItem } from '@/model/PrimaryItem'
  *
  * @export
  * @param {PrimaryItem[]} _items
- * @param {string} targetId
+ * @param {...string[]} targetIds
  * @return {*}  {PrimaryItem[]}
  */
-export function deletePrimaryItem(_items: PrimaryItem[], targetId: string): PrimaryItem[] {
+export function deletePrimaryItem(_items: PrimaryItem[], ...targetIds: string[]): PrimaryItem[] {
   const items = _items.slice()
-  ArrayUtils.removeByIdFromArray(items, targetId)
+  targetIds.forEach(targetId => {
+    ArrayUtils.removeByIdFromArray(items, targetId)
+  })
   return items
 }

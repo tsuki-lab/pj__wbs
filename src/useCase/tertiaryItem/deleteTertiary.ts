@@ -6,11 +6,13 @@ import { TertiaryItem } from '@/model/TertiaryItem'
  *
  * @export
  * @param {TertiaryItem[]} _items
- * @param {string} targetId
+ * @param {string[]} targetIds
  * @return {*}  {TertiaryItem[]}
  */
-export function deleteTertiary(_items: TertiaryItem[], targetId: string): TertiaryItem[] {
+export function deleteTertiary(_items: TertiaryItem[], ...targetIds: string[]): TertiaryItem[] {
   const items = _items.slice()
-  ArrayUtils.removeByIdFromArray(items, targetId)
+  targetIds.forEach(targetId => {
+    ArrayUtils.removeByIdFromArray(items, targetId)
+  })
   return items
 }
