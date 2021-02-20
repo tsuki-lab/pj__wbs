@@ -1,5 +1,8 @@
 <template>
-  <div class="home">
+  <h1 class="text-4xl ml-4">
+    WBS Generator
+  </h1>
+  <div class="pt-4 text-sm">
     <ul>
       <li
         v-for="(primaryItem, i) in primaryItems"
@@ -41,11 +44,25 @@
                 class="ml-8"
               >
                 <div class="flex justify-between mb-2">
-                  <input
-                    v-model="tertiaryItem.name"
-                    type="text"
-                    placeholder="小項目名"
-                  >
+                  <div>
+                    <input
+                      v-model="tertiaryItem.name"
+                      type="text"
+                      placeholder="小項目名"
+                    >
+                    <input
+                      v-model="tertiaryItem.manDay"
+                      type="number"
+                      :step="0.2"
+                      placeholder="概算工数"
+                      :min="0"
+                    >
+                    <input
+                      v-model="tertiaryItem.description"
+                      type="text"
+                      placeholder="備考"
+                    >
+                  </div>
                   <button
                     class="button-close w-6 h-6 mr-4"
                     @click="deleteTertiaryFromSecondaryChild(secondaryItem, tertiaryItem.id)"
@@ -63,6 +80,18 @@
                           v-model="quaternaryItem.name"
                           type="text"
                           placeholder="詳細タスク名"
+                        >
+                        <input
+                          v-model="quaternaryItem.manDay"
+                          type="number"
+                          :step="0.2"
+                          placeholder="詳細工数"
+                          :min="0"
+                        >
+                        <input
+                          v-model="quaternaryItem.description"
+                          type="text"
+                          placeholder="備考"
                         >
                         {{ quaternaryItem.id }}
                       </div>
@@ -183,9 +212,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .home {
-    font-size: .9rem;
-  }
   button:not(.button-close) {
     padding: .2rem .5rem;
     margin-top: .2rem;
@@ -194,7 +220,8 @@ export default defineComponent({
     border-radius: .3rem;
     color: #fff;
   }
-  input[type=text] {
+  input[type=text],
+  input[type=number] {
     border: solid 1px #666;
     padding: .1rem .2rem;
     border-radius: .2rem;
