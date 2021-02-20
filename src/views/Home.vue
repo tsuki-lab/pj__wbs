@@ -188,28 +188,40 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { itemStore } from '@/store/ItemStore'
+import { primaryStore } from '@/store/PrimaryStore'
+import { secondaryStore } from '@/store/SecondaryStore'
+import { tertiaryStore } from '@/store/TertiaryStore'
+import { quaternaryStore } from '@/store/QuaternaryStore'
 
 const {
   addPrimaryToState,
-  addSecondaryToState,
-  addTertiaryToState,
-  addQuaternaryToState,
-  secondaryItemsByParentId,
-  tertiaryItemsByParentId,
-  quaternaryItemsByParentId,
   deletePrimaryFromState,
-  deleteSecondaryFromState,
-  deleteTertiaryFromState,
+} = primaryStore
+
+const {
+  addSecondaryToState,
+  secondaryItemsByParentId,
+  deleteSecondaryFromState
+} = secondaryStore
+
+const {
+  addTertiaryToState,
+  tertiaryItemsByParentId,
+  deleteTertiaryFromState
+} = tertiaryStore
+
+const {
+  addQuaternaryToState,
+  quaternaryItemsByParentId,
   deleteQuaternaryFromState
-} = itemStore
+} = quaternaryStore
 
 export default defineComponent({
   name: 'Home',
   setup() {
     return {
-      primaryItems: computed(() => itemStore.primaryItems),
-      quaternaryItems: computed(() => itemStore.quaternaryItems),
+      primaryItems: computed(() => primaryStore.primaryItems),
+      quaternaryItems: computed(() => quaternaryStore.quaternaryItems),
       addPrimaryToState,
       addSecondaryToState,
       addTertiaryToState,
