@@ -77,6 +77,11 @@
                     <div class="flex justify-between mb-2">
                       <div>
                         <input
+                          :value="quaternaryItem.id"
+                          type="text"
+                          readonly
+                        >
+                        <input
                           v-model="quaternaryItem.name"
                           type="text"
                           placeholder="詳細タスク名"
@@ -93,7 +98,6 @@
                           type="text"
                           placeholder="備考"
                         >
-                        {{ quaternaryItem.id }}
                       </div>
                       <button
                         class="button-close w-6 h-6 mr-4"
