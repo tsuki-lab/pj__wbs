@@ -7,6 +7,7 @@
     </p>
     <ul>
       <li v-for="primaryItem in primaryItems" :key="primaryItem.id">
+        <button @click="deletePrimaryFromState(primaryItem.id)">削除</button>
         {{ primaryItem.id }}
         <p>
           <button @click="addSecondaryToPrimaryChild(primaryItem)">
@@ -15,6 +16,7 @@
         </p>
         <ul v-show="0 < primaryItem.children.length">
           <li v-for="secondaryItem in primaryItem.children" :key="secondaryItem.id">
+            <button @click="deleteSecondaryFromPrimaryChild(primaryItem, secondaryItem.id)">削除</button>
             {{ secondaryItem.id }}
             <p>
               <button @click="addTertiaryToSecondaryChild(secondaryItem)">
@@ -23,6 +25,7 @@
             </p>
             <ul v-show="0 < secondaryItem.children.length">
               <li v-for="tertiaryItem in secondaryItem.children" :key="tertiaryItem.id">
+                <button @click="deleteTertiaryFromSecondaryChild(secondaryItem, tertiaryItem.id)">削除</button>
                 {{ tertiaryItem.id }}
                 <p>
                   <button @click="addQuaternaryToTertiaryChild(tertiaryItem)">
@@ -31,6 +34,7 @@
                 </p>
                 <ul v-show="0 < tertiaryItem.children.length">
                   <li v-for="quaternaryItem in tertiaryItem.children" :key="quaternaryItem.id">
+                    <button @click="deleteQuaternaryFromTertiaryChild(tertiaryItem, quaternaryItem.id)">削除</button>
                     {{ quaternaryItem.id }}
                   </li>
                 </ul>
@@ -46,12 +50,19 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { itemStore } from '@/store/ItemStore';
+import { PrimaryItem } from '@/model/PrimaryItem';
+import { SecondaryItem } from '@/model/SecondaryItem';
+import { TertiaryItem } from '@/model/TertiaryItem';
 
 const {
   addPrimaryToState,
   addSecondaryToPrimaryChild,
   addTertiaryToSecondaryChild,
-  addQuaternaryToTertiaryChild
+  addQuaternaryToTertiaryChild,
+  deletePrimaryFromState,
+  deleteSecondaryFromPrimaryChild,
+  deleteTertiaryFromSecondaryChild,
+  deleteQuaternaryFromTertiaryChild
 } = itemStore
 
 export default defineComponent({
@@ -62,7 +73,11 @@ export default defineComponent({
       addPrimaryToState,
       addSecondaryToPrimaryChild,
       addTertiaryToSecondaryChild,
-      addQuaternaryToTertiaryChild
+      addQuaternaryToTertiaryChild,
+      deletePrimaryFromState:(deleteId: string) => deletePrimaryFromState({ deleteId }),
+      deleteSecondaryFromPrimaryChild:(target: PrimaryItem, deleteId: string) => deleteSecondaryFromPrimaryChild({ target, deleteId }),
+      deleteTertiaryFromSecondaryChild:(target: SecondaryItem, deleteId: string) => deleteTertiaryFromSecondaryChild({ target, deleteId }),
+      deleteQuaternaryFromTertiaryChild:(target: TertiaryItem, deleteId: string) => deleteQuaternaryFromTertiaryChild({ target, deleteId })
     }
   }
 });

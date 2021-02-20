@@ -7,6 +7,10 @@ import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
 import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondary'
 import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiary'
 import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternary'
+import { deletePrimaryItem } from '@/useCase/primaryItem/deletePrimaryItem'
+import { deleteSecondary } from '@/useCase/secondaryItem/deleteSecondary'
+import { deleteTertiary } from '@/useCase/tertiaryItem/deleteTertiary'
+import { deleteQuaternary } from '@/useCase/quaternaryItem/deleteQuaternary'
 
 /**
  * 項目管理ストア
@@ -71,6 +75,61 @@ class ItemStore extends VuexModule {
   @Action
   public async addQuaternaryToTertiaryChild(target: TertiaryItem) {
     target.children = addQuaternaryItem(target.children)
+
+    this.commitPrimaryItems(this.primaryItems)
+  }
+
+  /**
+   * stateから大項目を削除する
+   *
+   * @param {string} deleteId
+   * @memberof ItemStore
+   */
+  @Action
+  public async deletePrimaryFromState({ deleteId }: { deleteId: string }) {
+    const result = deletePrimaryItem(this.primaryItems, deleteId)
+
+    this.commitPrimaryItems(result)
+  }
+
+  /**
+   * 大項目から中項目から削除する
+   *
+   * @param {PrimaryItem} target
+   * @param {string} deleteId
+   * @memberof ItemStore
+   */
+  @Action
+  public async deleteSecondaryFromPrimaryChild({ target, deleteId }: { target: PrimaryItem; deleteId: string }) {
+    target.children = deleteSecondary(target.children, deleteId)
+
+    this.commitPrimaryItems(this.primaryItems)
+  }
+
+  /**
+   * 中項目から小項目から削除する
+   *
+   * @param {SecondaryItem} target
+   * @param {string} deleteId
+   * @memberof ItemStore
+   */
+  @Action
+  public async deleteTertiaryFromSecondaryChild({ target, deleteId }: { target: SecondaryItem; deleteId: string }) {
+    target.children = deleteTertiary(target.children, deleteId)
+
+    this.commitPrimaryItems(this.primaryItems)
+  }
+
+  /**
+   * 小項目から詳細項目を削除する
+   *
+   * @param {TertiaryItem} target
+   * @param {string} deleteId
+   * @memberof ItemStore
+   */
+  @Action
+  public async deleteQuaternaryFromTertiaryChild({ target, deleteId }: { target: TertiaryItem; deleteId: string }) {
+    target.children = deleteQuaternary(target.children, deleteId)
 
     this.commitPrimaryItems(this.primaryItems)
   }
