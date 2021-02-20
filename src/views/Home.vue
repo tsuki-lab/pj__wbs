@@ -94,6 +94,21 @@
                           :min="0"
                         >
                         <input
+                          v-model="quaternaryItem.criticalPathId"
+                          list="quaternary-item-ids"
+                          type="text"
+                          placeholder="クリティカルパスID"
+                        >
+                        <datalist id="quaternary-item-ids">
+                          <option
+                            v-for="q in quaternaryItems"
+                            :key="q.id"
+                            :value="q.id"
+                          >
+                            {{ q.name }}
+                          </option>
+                        </datalist>
+                        <input
                           v-model="quaternaryItem.description"
                           type="text"
                           placeholder="備考"
@@ -194,7 +209,7 @@ export default defineComponent({
   setup() {
     return {
       primaryItems: computed(() => itemStore.primaryItems),
-      secondaryItems: computed(() => itemStore.secondaryItems),
+      quaternaryItems: computed(() => itemStore.quaternaryItems),
       addPrimaryToState,
       addSecondaryToState,
       addTertiaryToState,
