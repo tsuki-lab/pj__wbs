@@ -41,9 +41,21 @@ class QuaternaryStore extends VuexModule {
   /** 詳細項目を複数削除 */
   @Action
   public async deleteQuaternariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deleteQuaternaryItems(this.quaternaryItems, ...targetIds)
 
-    this.commitQuaternaryItems(result)
+    const deletedResult = await new Promise<QuaternaryItem[]>(resolve => {
+      try {
+        // 詳細項目の複数削除
+        const _result = deleteQuaternaryItems(this.quaternaryItems, ...targetIds)
+
+        resolve(_result)
+
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    // State更新処理
+    this.commitQuaternaryItems(deletedResult)
   }
 
   /** stateの詳細項目一覧を更新 */

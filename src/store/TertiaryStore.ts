@@ -8,6 +8,7 @@ import { TertiaryItem } from '@/model/TertiaryItem'
 // useCases
 import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiaryItem'
 import { deleteTertiaryItems } from '@/useCase/tertiaryItem/deleteTertiaryItems'
+import { quaternaryStore } from './QuaternaryStore'
 
 /**
  * 小項目ストア
@@ -41,9 +42,27 @@ class TertiaryStore extends VuexModule {
   /** 小項目を複数削除 */
   @Action
   public async deleteTertiariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deleteTertiaryItems(this.tertiaryItems, ...targetIds)
 
-    this.commitTertiaryItems(result)
+    const deletedResult = await new Promise<TertiaryItem[]>(resolve => {
+      try {
+        // 小項目の複数削除
+        const _result = deleteTertiaryItems(this.tertiaryItems, ...targetIds)
+
+        // 関連する詳細項目の複数削除
+        const quaternaryIds = targetIds.flatMap(targetId => {
+          return quaternaryStore.quaternaryItemsByParentId(targetId).map(v => v.id)
+        })
+        Promise.resolve(quaternaryStore.deleteQuaternariesFromState({ targetIds: quaternaryIds }))
+
+        resolve(_result)
+
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    // State更新処理
+    this.commitTertiaryItems(deletedResult)
   }
 
   /** stateの小項目一覧を更新 */

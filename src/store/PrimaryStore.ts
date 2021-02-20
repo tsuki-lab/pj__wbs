@@ -7,6 +7,7 @@ import { PrimaryItem } from '@/model/PrimaryItem'
 // useCases
 import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
 import { deletePrimaryItems } from '@/useCase/primaryItem/deletePrimaryItems'
+import { secondaryStore } from './SecondaryStore'
 
 /**
  * 大項目ストア
@@ -30,8 +31,27 @@ class PrimaryStore extends VuexModule {
   /** 大項目を複数削除 */
   @Action
   public async deletePrimariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deletePrimaryItems(this.primaryItems, ...targetIds)
-    this.commitPrimaryItems(result)
+
+    const deletedResult = await new Promise<PrimaryItem[]>(resolve => {
+      try {
+        // 大項目の複数削除
+        const _result = deletePrimaryItems(this.primaryItems, ...targetIds)
+
+        // 関連する中項目の複数削除
+        const secondaryIds = targetIds.flatMap(targetId => {
+          return secondaryStore.secondaryItemsByParentId(targetId).map(v => v.id)
+        })
+        Promise.resolve(secondaryStore.deleteSecondariesFromState({ targetIds: secondaryIds }))
+
+        resolve(_result)
+
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    // State更新処理
+    this.commitPrimaryItems(deletedResult)
   }
 
   /** stateの大項目一覧を更新 */
