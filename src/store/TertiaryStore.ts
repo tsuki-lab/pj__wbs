@@ -6,8 +6,8 @@ import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
 
 // useCases
-import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiary'
-import { deleteTertiary } from '@/useCase/tertiaryItem/deleteTertiary'
+import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiaryItem'
+import { deleteTertiaryItems } from '@/useCase/tertiaryItem/deleteTertiaryItems'
 
 /**
  * 小項目ストア
@@ -41,7 +41,7 @@ class TertiaryStore extends VuexModule {
   /** 小項目を複数削除 */
   @Action
   public async deleteTertiariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deleteTertiary(this.tertiaryItems, ...targetIds)
+    const result = deleteTertiaryItems(this.tertiaryItems, ...targetIds)
 
     this.commitTertiaryItems(result)
   }

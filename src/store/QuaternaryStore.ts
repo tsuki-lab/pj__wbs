@@ -6,8 +6,8 @@ import { TertiaryItem } from '@/model/TertiaryItem'
 import { QuaternaryItem } from '@/model/QuaternaryItem'
 
 // useCases
-import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternary'
-import { deleteQuaternary } from '@/useCase/quaternaryItem/deleteQuaternary'
+import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternaryItem'
+import { deleteQuaternaryItems } from '@/useCase/quaternaryItem/deleteQuaternaryItems'
 
 /**
  * 詳細項目ストア
@@ -41,7 +41,7 @@ class QuaternaryStore extends VuexModule {
   /** 詳細項目を複数削除 */
   @Action
   public async deleteQuaternariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deleteQuaternary(this.quaternaryItems, ...targetIds)
+    const result = deleteQuaternaryItems(this.quaternaryItems, ...targetIds)
 
     this.commitQuaternaryItems(result)
   }

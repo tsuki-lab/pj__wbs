@@ -6,7 +6,7 @@ import { PrimaryItem } from '@/model/PrimaryItem'
 
 // useCases
 import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
-import { deletePrimaryItem } from '@/useCase/primaryItem/deletePrimaryItem'
+import { deletePrimaryItems } from '@/useCase/primaryItem/deletePrimaryItems'
 
 /**
  * 大項目ストア
@@ -30,7 +30,7 @@ class PrimaryStore extends VuexModule {
   /** 大項目を複数削除 */
   @Action
   public async deletePrimariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deletePrimaryItem(this.primaryItems, ...targetIds)
+    const result = deletePrimaryItems(this.primaryItems, ...targetIds)
     this.commitPrimaryItems(result)
   }
 

@@ -6,8 +6,8 @@ import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 
 // useCases
-import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondary'
-import { deleteSecondary } from '@/useCase/secondaryItem/deleteSecondary'
+import { addSecondaryItem } from '@/useCase/secondaryItem/addSecondaryItem'
+import { deleteSecondaryItems } from '@/useCase/secondaryItem/deleteSecondaryItems'
 
 /**
  * 中項目ストア
@@ -41,7 +41,7 @@ class SecondaryStore extends VuexModule {
   /** 中項目を複数削除 */
   @Action
   public async deleteSecondariesFromState({ targetIds }: { targetIds: string[] }) {
-    const result = deleteSecondary(this.secondaryItems, ...targetIds)
+    const result = deleteSecondaryItems(this.secondaryItems, ...targetIds)
 
     this.commitSecondaryItems(result)
   }
