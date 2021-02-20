@@ -21,7 +21,7 @@ export class TertiaryItem {
   public name = ''
   public manDay = ''
   public description = ''
-  public category = ''
+  public categoryId = ''
 
   constructor(params: InitializeArgs) {
     this.id = shortid()
