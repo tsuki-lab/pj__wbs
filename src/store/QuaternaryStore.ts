@@ -8,6 +8,7 @@ import { QuaternaryItem } from '@/model/QuaternaryItem'
 // useCases
 import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternaryItem'
 import { deleteQuaternaryItems } from '@/useCase/quaternaryItem/deleteQuaternaryItems'
+import { MathUtils } from '@/utils/MathUtils'
 
 /**
  * 詳細項目ストア
@@ -30,17 +31,11 @@ class QuaternaryStore extends VuexModule {
     }
   }
 
-  // FIXME:
-  // この計算の為に Store に処理を追加するのはよくない気がする。
-  // 計算する為の処理を Utils もしくは Math を拡張したほうが良い。
-  // 早めに対応する。
   /** parentIdで絞り込んだ詳細項目の詳細工数集計 */
   public get quaternaryManDayAggregateByParentId() {
     return (parentId: string) => {
-      return this.quaternaryItemsByParentId(parentId).reduce((a, c) => {
-        // jsの小数点バグ対策計算
-        return ((a * 10) + (c.manDay * 10)) / 10
-      }, 0)
+      const numbers = this.quaternaryItemsByParentId(parentId).map(v => v.manDay)
+      return MathUtils.sum(...numbers)
     }
   }
 
