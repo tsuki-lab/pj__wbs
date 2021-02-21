@@ -30,6 +30,10 @@ class QuaternaryStore extends VuexModule {
     }
   }
 
+  // FIXME:
+  // この計算の為に Store に処理を追加するのはよくない気がする。
+  // 計算する為の処理を Utils もしくは Math を拡張したほうが良い。
+  // 早めに対応する。
   /** parentIdで絞り込んだ詳細項目の詳細工数集計 */
   public get quaternaryManDayAggregateByParentId() {
     return (parentId: string) => {
