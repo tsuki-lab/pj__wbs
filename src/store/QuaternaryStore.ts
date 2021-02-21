@@ -30,6 +30,15 @@ class QuaternaryStore extends VuexModule {
     }
   }
 
+  /** parentIdで絞り込んだ詳細項目の詳細工数集計 */
+  public get quaternaryManDayAggregateByParentId() {
+    return (parentId: string) => {
+      return this.quaternaryItemsByParentId(parentId).reduce((a, c) => {
+        return a + c.manDay
+      }, 0)
+    }
+  }
+
   /** 詳細項目を追加 */
   @Action
   public async addQuaternaryToState(target: TertiaryItem) {

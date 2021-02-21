@@ -51,11 +51,17 @@
                       placeholder="小項目名"
                     >
                     <input
-                      v-model="tertiaryItem.manDay"
+                      v-model.number="tertiaryItem.manDay"
                       type="number"
                       :step="0.2"
                       placeholder="概算工数"
                       :min="0"
+                    >
+                    <input
+                      :value="quaternaryManDayAggregateByParentId(tertiaryItem.id)"
+                      type="number"
+                      placeholder="詳細工数集計"
+                      readonly
                     >
                     <input
                       v-model="tertiaryItem.description"
@@ -87,7 +93,7 @@
                           placeholder="詳細タスク名"
                         >
                         <input
-                          v-model="quaternaryItem.manDay"
+                          v-model.number="quaternaryItem.manDay"
                           type="number"
                           :step="0.2"
                           placeholder="詳細工数"
@@ -212,6 +218,7 @@ const {
 
 const {
   addQuaternaryToState,
+  quaternaryManDayAggregateByParentId,
   quaternaryItemsByParentId,
   deleteQuaternariesFromState
 } = quaternaryStore
@@ -229,6 +236,7 @@ export default defineComponent({
       secondaryItemsByParentId,
       tertiaryItemsByParentId,
       quaternaryItemsByParentId,
+      quaternaryManDayAggregateByParentId,
       deletePrimaryItem: (targetId: string) => {
         deletePrimariesFromState({ targetIds: [ targetId ]})
       },

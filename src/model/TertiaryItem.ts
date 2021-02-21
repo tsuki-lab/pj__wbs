@@ -19,7 +19,7 @@ export class TertiaryItem {
   public readonly id: string
   public readonly parentId: string
   public name = ''
-  public manDay = ''
+  public manDay = 0
   public description = ''
   public categoryId = ''
 
