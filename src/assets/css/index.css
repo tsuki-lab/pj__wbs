@@ -1,0 +1,43 @@
+button:not(.button-close) {
+  padding: .2rem .5rem;
+  margin-top: .2rem;
+  margin-left: .4rem;
+  background-color: #59646b;
+  border-radius: .3rem;
+  color: #fff;
+}
+
+input[type=text],
+input[type=number] {
+  border: solid 1px #666;
+  padding: .1rem .2rem;
+  border-radius: .2rem;
+}
+
+.button-close {
+  position: relative;
+}
+
+.button-close::before {
+  content: '';
+  color: #333;
+  background: currentColor;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: .1em;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.button-close::after {
+  content: '';
+  color: #333;
+  background: currentColor;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: .1em;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
