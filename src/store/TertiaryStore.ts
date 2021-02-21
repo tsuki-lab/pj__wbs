@@ -45,8 +45,11 @@ class TertiaryStore extends VuexModule {
 
     const deletedResult = await new Promise<TertiaryItem[]>(resolve => {
       try {
+        // clone
+        const items = this.tertiaryItems.slice()
+
         // 小項目の複数削除
-        const _result = deleteTertiaryItems(this.tertiaryItems, ...targetIds)
+        const result = deleteTertiaryItems(items, ...targetIds)
 
         // 関連する詳細項目の複数削除
         const quaternaryIds = targetIds.flatMap(targetId => {
@@ -54,7 +57,7 @@ class TertiaryStore extends VuexModule {
         })
         Promise.resolve(quaternaryStore.deleteQuaternariesFromState({ targetIds: quaternaryIds }))
 
-        resolve(_result)
+        resolve(result)
 
       } catch (e) {
         console.error(e)

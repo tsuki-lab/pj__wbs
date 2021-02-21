@@ -5,12 +5,11 @@ import { SecondaryItem } from '@/model/SecondaryItem'
  * 中項目を対象のIDを元に配列から削除する
  *
  * @export
- * @param {SecondaryItem[]} _items
+ * @param {SecondaryItem[]} items
  * @param {...string[]} targetIds
  * @return {*}  {SecondaryItem[]}
  */
-export function deleteSecondaryItems(_items: SecondaryItem[], ...targetIds: string[]): SecondaryItem[] {
-  const items = _items.slice()
+export function deleteSecondaryItems(items: SecondaryItem[], ...targetIds: string[]): SecondaryItem[] {
   targetIds.forEach(targetId => {
     ArrayUtils.removeByIdFromArray(items, targetId)
   })

@@ -32,10 +32,13 @@ class CategoryStore extends VuexModule {
 
     const deletedResult = await new Promise<Category[]>(resolve => {
       try {
-        // 大項目の複数削除
-        const _result = deleteCategories(this.categories, ...targetIds)
+        // clone
+        const items = this.categories.slice()
 
-        resolve(_result)
+        // 大項目の複数削除
+        const result = deleteCategories(items, ...targetIds)
+
+        resolve(result)
 
       } catch (e) {
         console.error(e)

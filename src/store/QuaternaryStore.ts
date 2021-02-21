@@ -53,10 +53,13 @@ class QuaternaryStore extends VuexModule {
 
     const deletedResult = await new Promise<QuaternaryItem[]>(resolve => {
       try {
-        // 詳細項目の複数削除
-        const _result = deleteQuaternaryItems(this.quaternaryItems, ...targetIds)
+        // clone
+        const items = this.quaternaryItems.slice()
 
-        resolve(_result)
+        // 詳細項目の複数削除
+        const result = deleteQuaternaryItems(items, ...targetIds)
+
+        resolve(result)
 
       } catch (e) {
         console.error(e)

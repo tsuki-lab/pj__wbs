@@ -34,8 +34,11 @@ class PrimaryStore extends VuexModule {
 
     const deletedResult = await new Promise<PrimaryItem[]>(resolve => {
       try {
+        // clone
+        const items = this.primaryItems.slice()
+
         // 大項目の複数削除
-        const _result = deletePrimaryItems(this.primaryItems, ...targetIds)
+        const result = deletePrimaryItems(items, ...targetIds)
 
         // 関連する中項目の複数削除
         const secondaryIds = targetIds.flatMap(targetId => {
@@ -43,7 +46,7 @@ class PrimaryStore extends VuexModule {
         })
         Promise.resolve(secondaryStore.deleteSecondariesFromState({ targetIds: secondaryIds }))
 
-        resolve(_result)
+        resolve(result)
 
       } catch (e) {
         console.error(e)
