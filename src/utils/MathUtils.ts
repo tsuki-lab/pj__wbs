@@ -13,10 +13,10 @@ export class MathUtils {
    * @param {...number[]} numbers
    * @memberof MathUtils
    */
-  public static sum(...numbers: number[]) {
-    numbers.reduce((a, c) => {
+  public static sum(...numbers: number[]): number {
+    return numbers.reduce((a, c) => {
       return ((a * 10) + (c * 10)) / 10
-    })
+    }, 0)
   }
 
 }
