@@ -34,7 +34,8 @@ class QuaternaryStore extends VuexModule {
   public get quaternaryManDayAggregateByParentId() {
     return (parentId: string) => {
       return this.quaternaryItemsByParentId(parentId).reduce((a, c) => {
-        return a + c.manDay
+        // jsの小数点バグ対策計算
+        return ((a * 10) + (c.manDay * 10)) / 10
       }, 0)
     }
   }
