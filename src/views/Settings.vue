@@ -9,12 +9,17 @@
     <li
       v-for="category in categories"
       :key="category.id"
+      class="flex justify-between mb-2"
     >
       <input
         v-model="category.name"
         type="text"
         placeholder="種別名"
       >
+      <button
+        class="button-close w-6 h-6 mr-4"
+        @click="deleteCategory(category.id)"
+      />
     </li>
   </ul>
   <div class="flex justify-end mx-2">
@@ -29,7 +34,8 @@ import { defineComponent, computed } from 'vue'
 import { categoryStore } from '@/store/CategoryStore'
 
 const {
-  addCreateCategory
+  addCreateCategory,
+  deleteCategories
 } = categoryStore
 
 export default defineComponent({
@@ -37,7 +43,10 @@ export default defineComponent({
   setup(){
     return {
       categories: computed(() => categoryStore.categories),
-      addCreateCategory
+      addCreateCategory,
+      deleteCategory: (targetId: string) => {
+        deleteCategories({ targetIds: [ targetId ] })
+      }
     }
   }
 });
