@@ -6,6 +6,7 @@ import { Category } from '@/model/Category';
 
 // useCase
 import { addCreateCategory } from '@/useCase/category/addCreateCategory';
+import { deleteCategories } from '@/useCase/category/deleteCategories';
 
 /**
  * カテゴリーストア
@@ -22,12 +23,32 @@ class CategoryStore extends VuexModule {
   @Action
   public addCreateCategory() {
     const result = addCreateCategory(this.categories)
-    this.setCategoriesToState(result)
+    this.commitCategories(result)
+  }
+
+  /** 大項目を複数削除 */
+  @Action
+  public async deleteCategories({ targetIds }: { targetIds: string[] }) {
+
+    const deletedResult = await new Promise<Category[]>(resolve => {
+      try {
+        // 大項目の複数削除
+        const _result = deleteCategories(this.categories, ...targetIds)
+
+        resolve(_result)
+
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    // State更新処理
+    this.commitCategories(deletedResult)
   }
 
   /** stateのカテゴリー一覧を更新 */
   @Mutation
-  private setCategoriesToState(payload: Category[]) {
+  private commitCategories(payload: Category[]) {
     this.categories = payload
   }
 
