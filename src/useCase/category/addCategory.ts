@@ -5,11 +5,10 @@ import { Category } from '@/model/Category';
  *
  * @export
  * @param {Category[]} _items
+ * @param {Category} item
  * @return {*}  {Category[]}
  */
-export function addCreateCategory(_items: Category[]): Category[] {
-  const items = _items.slice()
-  const item = new Category()
+export function addCategory(items: Category[], item: Category): Category[] {
   items.push(item)
   return items
 }

@@ -34,7 +34,9 @@ class SecondaryStore extends VuexModule {
   /** 中項目を追加 */
   @Action
   public async addSecondaryToState(target: PrimaryItem) {
-    const result = addSecondaryItem(this.secondaryItems, target.id)
+    const items = this.secondaryItems.slice()
+    const item = new SecondaryItem({ parentId: target.id })
+    const result = addSecondaryItem(items, item)
 
     this.commitSecondaryItems(result)
   }

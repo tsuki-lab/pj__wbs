@@ -42,7 +42,9 @@ class QuaternaryStore extends VuexModule {
   /** 詳細項目を追加 */
   @Action
   public async addQuaternaryToState(target: TertiaryItem) {
-    const result = addQuaternaryItem(this.quaternaryItems, target.id)
+    const items = this.quaternaryItems.slice()
+    const item = new QuaternaryItem({ parentId: target.id })
+    const result = addQuaternaryItem(items, item)
 
     this.commitQuaternaryItems(result)
   }

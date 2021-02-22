@@ -24,7 +24,10 @@ class PrimaryStore extends VuexModule {
   /** 大項目を追加 */
   @Action
   public async addPrimaryToState() {
-    const result = addPrimaryItem(this.primaryItems)
+    const items = this.primaryItems.slice()
+    const item = new PrimaryItem()
+    const result = addPrimaryItem(items, item)
+
     this.commitPrimaryItems(result)
   }
 

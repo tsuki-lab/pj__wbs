@@ -34,7 +34,9 @@ class TertiaryStore extends VuexModule {
   /** 小項目を追加 */
   @Action
   public async addTertiaryToState(target: SecondaryItem) {
-    const result = addTertiaryItem(this.tertiaryItems, target.id)
+    const items = this.tertiaryItems.slice()
+    const item = new TertiaryItem({ parentId: target.id })
+    const result = addTertiaryItem(items, item)
 
     this.commitTertiaryItems(result)
   }

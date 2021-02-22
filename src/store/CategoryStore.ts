@@ -5,7 +5,7 @@ import { Module, VuexModule, getModule, Action, Mutation } from "vuex-module-dec
 import { Category } from '@/model/Category';
 
 // useCase
-import { addCreateCategory } from '@/useCase/category/addCreateCategory';
+import { addCategory } from '@/useCase/category/addCategory';
 import { deleteCategories } from '@/useCase/category/deleteCategories';
 
 /**
@@ -22,7 +22,10 @@ class CategoryStore extends VuexModule {
   /** カテゴリーを追加 */
   @Action
   public addCreateCategory() {
-    const result = addCreateCategory(this.categories)
+    const items = this.categories.slice()
+    const item = new Category()
+    const result = addCategory(items, item)
+
     this.commitCategories(result)
   }
 
