@@ -30,7 +30,7 @@ class PrimaryStore extends VuexModule {
 
   /** 大項目を複数削除 */
   @Action
-  public async deletePrimariesFromState({ targetIds }: { targetIds: string[] }) {
+  public async deletePrimaries({ primariesToDel }: { primariesToDel: PrimaryItem[] }) {
 
     const deletedResult = await new Promise<PrimaryItem[]>(resolve => {
       try {
@@ -38,13 +38,14 @@ class PrimaryStore extends VuexModule {
         const items = this.primaryItems.slice()
 
         // 大項目の複数削除
-        const result = deletePrimaryItems(items, ...targetIds)
+        const ids = primariesToDel.map(v => v.id)
+        const result = deletePrimaryItems(items, ...ids)
 
         // 関連する中項目の複数削除
-        const secondaryIds = targetIds.flatMap(targetId => {
-          return secondaryStore.secondaryItemsByParentId(targetId).map(v => v.id)
+        const secondariesToDel = primariesToDel.flatMap(v => {
+          return secondaryStore.secondaryItemsByParent(v)
         })
-        Promise.resolve(secondaryStore.deleteSecondariesFromState({ targetIds: secondaryIds }))
+        Promise.resolve(secondaryStore.deleteSecondaries({ secondariesToDel }))
 
         resolve(result)
 

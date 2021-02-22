@@ -23,10 +23,10 @@ class SecondaryStore extends VuexModule {
   public secondaryItems: SecondaryItem[] = []
 
   /** parentIdで絞り込んだ中項目一覧 */
-  public get secondaryItemsByParentId() {
-    return (parentId: string) => {
+  public get secondaryItemsByParent() {
+    return (parent: PrimaryItem) => {
       return this.secondaryItems.filter(v => {
-        return v.parentId === parentId
+        return v.parentId === parent.id
       })
     }
   }
@@ -41,7 +41,7 @@ class SecondaryStore extends VuexModule {
 
   /** 中項目を複数削除 */
   @Action
-  public async deleteSecondariesFromState({ targetIds }: { targetIds: string[] }) {
+  public async deleteSecondaries({ secondariesToDel }: { secondariesToDel: SecondaryItem[] }) {
 
     const deletedResult = await new Promise<SecondaryItem[]>(resolve => {
       try {
@@ -49,13 +49,14 @@ class SecondaryStore extends VuexModule {
         const items = this.secondaryItems.slice()
 
         // 中項目の複数削除
-        const result = deleteSecondaryItems(items, ...targetIds)
+        const ids = secondariesToDel.map(v => v.id)
+        const result = deleteSecondaryItems(items, ...ids)
 
         // 関連する小項目の複数削除
-        const tertiaryIds = targetIds.flatMap(targetId => {
-          return tertiaryStore.tertiaryItemsByParentId(targetId).map(v => v.id)
+        const tertiariesToDel = secondariesToDel.flatMap(v => {
+          return tertiaryStore.tertiaryItemsByParent(v)
         })
-        Promise.resolve(tertiaryStore.deleteTertiariesFromState({ targetIds: tertiaryIds }))
+        Promise.resolve(tertiaryStore.deleteTertiaries({ tertiariesToDel }))
 
         resolve(result)
 

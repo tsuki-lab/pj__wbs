@@ -23,18 +23,18 @@ class QuaternaryStore extends VuexModule {
   public quaternaryItems: QuaternaryItem[] = []
 
   /** parentIdで絞り込んだ詳細項目一覧 */
-  public get quaternaryItemsByParentId() {
-    return (parentId: string) => {
+  public get quaternaryItemsByParent() {
+    return (parent: TertiaryItem) => {
       return this.quaternaryItems.filter(v => {
-        return v.parentId === parentId
+        return v.parentId === parent.id
       })
     }
   }
 
   /** parentIdで絞り込んだ詳細項目の詳細工数集計 */
-  public get quaternaryManDayAggregateByParentId() {
-    return (parentId: string) => {
-      const numbers = this.quaternaryItemsByParentId(parentId).map(v => v.manDay)
+  public get quaternaryManDayAggregateByParent() {
+    return (parent: TertiaryItem) => {
+      const numbers = this.quaternaryItemsByParent(parent).map(v => v.manDay)
       return MathUtils.sum(...numbers)
     }
   }
@@ -49,7 +49,7 @@ class QuaternaryStore extends VuexModule {
 
   /** 詳細項目を複数削除 */
   @Action
-  public async deleteQuaternariesFromState({ targetIds }: { targetIds: string[] }) {
+  public async deleteQuaternaries({ quaternariesToDel }: { quaternariesToDel: QuaternaryItem[] }) {
 
     const deletedResult = await new Promise<QuaternaryItem[]>(resolve => {
       try {
@@ -57,7 +57,8 @@ class QuaternaryStore extends VuexModule {
         const items = this.quaternaryItems.slice()
 
         // 詳細項目の複数削除
-        const result = deleteQuaternaryItems(items, ...targetIds)
+        const ids = quaternariesToDel.map(v => v.id)
+        const result = deleteQuaternaryItems(items, ...ids)
 
         resolve(result)
 

@@ -23,10 +23,10 @@ class TertiaryStore extends VuexModule {
   public tertiaryItems: TertiaryItem[] = []
 
   /** parentIdで絞り込んだ小項目一覧 */
-  public get tertiaryItemsByParentId() {
-    return (parentId: string) => {
+  public get tertiaryItemsByParent() {
+    return (parent: SecondaryItem) => {
       return this.tertiaryItems.filter(v => {
-        return v.parentId === parentId
+        return v.parentId === parent.id
       })
     }
   }
@@ -41,7 +41,7 @@ class TertiaryStore extends VuexModule {
 
   /** 小項目を複数削除 */
   @Action
-  public async deleteTertiariesFromState({ targetIds }: { targetIds: string[] }) {
+  public async deleteTertiaries({ tertiariesToDel }: { tertiariesToDel: TertiaryItem[] }) {
 
     const deletedResult = await new Promise<TertiaryItem[]>(resolve => {
       try {
@@ -49,13 +49,14 @@ class TertiaryStore extends VuexModule {
         const items = this.tertiaryItems.slice()
 
         // 小項目の複数削除
-        const result = deleteTertiaryItems(items, ...targetIds)
+        const ids = tertiariesToDel.map(v => v.id)
+        const result = deleteTertiaryItems(items, ...ids)
 
         // 関連する詳細項目の複数削除
-        const quaternaryIds = targetIds.flatMap(targetId => {
-          return quaternaryStore.quaternaryItemsByParentId(targetId).map(v => v.id)
+        const quaternariesToDel = tertiariesToDel.flatMap(tertiary => {
+          return quaternaryStore.quaternaryItemsByParent(tertiary)
         })
-        Promise.resolve(quaternaryStore.deleteQuaternariesFromState({ targetIds: quaternaryIds }))
+        Promise.resolve(quaternaryStore.deleteQuaternaries({ quaternariesToDel }))
 
         resolve(result)
 

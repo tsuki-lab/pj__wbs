@@ -17,12 +17,12 @@
           >
           <button
             class="button-close w-6 h-6 mr-4"
-            @click="deletePrimaryItem(primaryItem.id)"
+            @click="deletePrimaryItem(primaryItem)"
           />
         </div>
-        <ul v-show="0 < secondaryItemsByParentId(primaryItem.id).length">
+        <ul v-show="0 < secondaryItemsByParent(primaryItem).length">
           <li
-            v-for="(secondaryItem, ii) in secondaryItemsByParentId(primaryItem.id)"
+            v-for="(secondaryItem, ii) in secondaryItemsByParent(primaryItem)"
             :key="secondaryItem.id"
             class="ml-8"
           >
@@ -34,12 +34,12 @@
               >
               <button
                 class="button-close w-6 h-6 mr-4"
-                @click="deleteSecondaryItem(secondaryItem.id)"
+                @click="deleteSecondaryItem(secondaryItem)"
               />
             </div>
-            <ul v-show="0 < tertiaryItemsByParentId(secondaryItem.id).length">
+            <ul v-show="0 < tertiaryItemsByParent(secondaryItem).length">
               <li
-                v-for="(tertiaryItem, iii) in tertiaryItemsByParentId(secondaryItem.id)"
+                v-for="(tertiaryItem, iii) in tertiaryItemsByParent(secondaryItem)"
                 :key="tertiaryItem.id"
                 class="ml-8"
               >
@@ -58,7 +58,7 @@
                       :min="0"
                     >
                     <input
-                      :value="quaternaryManDayAggregateByParentId(tertiaryItem.id)"
+                      :value="quaternaryManDayAggregateByParent(tertiaryItem)"
                       type="number"
                       placeholder="詳細工数集計"
                       readonly
@@ -71,12 +71,12 @@
                   </div>
                   <button
                     class="button-close w-6 h-6 mr-4"
-                    @click="deleteTertiaryItem(tertiaryItem.id)"
+                    @click="deleteTertiaryItem(tertiaryItem)"
                   />
                 </div>
-                <ul v-show="0 < quaternaryItemsByParentId(tertiaryItem.id).length">
+                <ul v-show="0 < quaternaryItemsByParent(tertiaryItem).length">
                   <li
-                    v-for="quaternaryItem in quaternaryItemsByParentId(tertiaryItem.id)"
+                    v-for="quaternaryItem in quaternaryItemsByParent(tertiaryItem)"
                     :key="quaternaryItem.id"
                     class="ml-8"
                   >
@@ -122,14 +122,14 @@
                       </div>
                       <button
                         class="button-close w-6 h-6 mr-4"
-                        @click="deleteQuaternaryItem(quaternaryItem.id)"
+                        @click="deleteQuaternaryItem(quaternaryItem)"
                       />
                     </div>
                   </li>
                 </ul>
                 <div class="flex justify-end mx-2">
-                  <template v-if="iii === tertiaryItemsByParentId(secondaryItem.id).length - 1">
-                    <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
+                  <template v-if="iii === tertiaryItemsByParent(secondaryItem).length - 1">
+                    <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
                       <template v-if="i === primaryItems.length - 1">
                         <button @click="addPrimaryItem">
                           大項目追加
@@ -150,8 +150,8 @@
               </li>
             </ul>
             <div class="flex justify-end mx-2">
-              <template v-if="tertiaryItemsByParentId(secondaryItem.id).length < 1">
-                <template v-if="ii === secondaryItemsByParentId(primaryItem.id).length - 1">
+              <template v-if="tertiaryItemsByParent(secondaryItem).length < 1">
+                <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
                   <template v-if="i === primaryItems.length - 1">
                     <button @click="addPrimaryItem">
                       大項目追加
@@ -169,7 +169,7 @@
           </li>
         </ul>
         <div class="flex justify-end mx-2">
-          <template v-if="secondaryItemsByParentId(primaryItem.id).length < 1">
+          <template v-if="secondaryItemsByParent(primaryItem).length < 1">
             <template v-if="i === primaryItems.length - 1">
               <button @click="addPrimaryItem">
                 大項目追加
@@ -198,29 +198,33 @@ import { primaryStore } from '@/store/PrimaryStore'
 import { secondaryStore } from '@/store/SecondaryStore'
 import { tertiaryStore } from '@/store/TertiaryStore'
 import { quaternaryStore } from '@/store/QuaternaryStore'
+import { PrimaryItem } from '../model/PrimaryItem'
+import { SecondaryItem } from '../model/SecondaryItem'
+import { TertiaryItem } from '../model/TertiaryItem'
+import { QuaternaryItem } from '../model/QuaternaryItem'
 
 const {
   addPrimaryToState,
-  deletePrimariesFromState,
+  deletePrimaries,
 } = primaryStore
 
 const {
   addSecondaryToState,
-  secondaryItemsByParentId,
-  deleteSecondariesFromState
+  secondaryItemsByParent,
+  deleteSecondaries
 } = secondaryStore
 
 const {
   addTertiaryToState,
-  tertiaryItemsByParentId,
-  deleteTertiariesFromState
+  tertiaryItemsByParent,
+  deleteTertiaries
 } = tertiaryStore
 
 const {
   addQuaternaryToState,
-  quaternaryManDayAggregateByParentId,
-  quaternaryItemsByParentId,
-  deleteQuaternariesFromState
+  quaternaryManDayAggregateByParent,
+  quaternaryItemsByParent,
+  deleteQuaternaries
 } = quaternaryStore
 
 export default defineComponent({
@@ -233,21 +237,21 @@ export default defineComponent({
       addSecondaryItem: addSecondaryToState,
       addTertiaryItem: addTertiaryToState,
       addQuaternaryItem: addQuaternaryToState,
-      secondaryItemsByParentId,
-      tertiaryItemsByParentId,
-      quaternaryItemsByParentId,
-      quaternaryManDayAggregateByParentId,
-      deletePrimaryItem: (targetId: string) => {
-        deletePrimariesFromState({ targetIds: [ targetId ]})
+      secondaryItemsByParent,
+      tertiaryItemsByParent,
+      quaternaryItemsByParent,
+      quaternaryManDayAggregateByParent,
+      deletePrimaryItem: (target: PrimaryItem) => {
+        deletePrimaries({ primariesToDel: [ target ]})
       },
-      deleteSecondaryItem: (targetId: string) => {
-        deleteSecondariesFromState({ targetIds: [ targetId ]})
+      deleteSecondaryItem: (target: SecondaryItem) => {
+        deleteSecondaries({ secondariesToDel: [ target ]})
       },
-      deleteTertiaryItem: (targetId: string) => {
-        deleteTertiariesFromState({ targetIds: [ targetId ]})
+      deleteTertiaryItem: (target: TertiaryItem) => {
+        deleteTertiaries({ tertiariesToDel: [ target ]})
       },
-      deleteQuaternaryItem: (targetId: string) => {
-        deleteQuaternariesFromState({ targetIds: [ targetId ] })
+      deleteQuaternaryItem: (target: QuaternaryItem) => {
+        deleteQuaternaries({ quaternariesToDel: [ target ] })
       }
     }
   }
