@@ -198,10 +198,10 @@ import { primaryStore } from '@/store/PrimaryStore'
 import { secondaryStore } from '@/store/SecondaryStore'
 import { tertiaryStore } from '@/store/TertiaryStore'
 import { quaternaryStore } from '@/store/QuaternaryStore'
-import { PrimaryItem } from '../model/PrimaryItem'
-import { SecondaryItem } from '../model/SecondaryItem'
-import { TertiaryItem } from '../model/TertiaryItem'
-import { QuaternaryItem } from '../model/QuaternaryItem'
+import { PrimaryItem } from '@/model/PrimaryItem'
+import { SecondaryItem } from '@/model/SecondaryItem'
+import { TertiaryItem } from '@/model/TertiaryItem'
+import { QuaternaryItem } from '@/model/QuaternaryItem'
 
 const {
   addPrimaryToState,

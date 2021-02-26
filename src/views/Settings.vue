@@ -2,36 +2,39 @@
   <h1 class="text-4xl ml-4 font-bold">
     Settings
   </h1>
-  <h2 class="text-2xl ml-4 font-bold">
-    Categories
-  </h2>
-  <ul>
-    <li
-      v-for="category in categories"
-      :key="category.id"
-      class="flex justify-between mb-2"
-    >
-      <input
-        v-model="category.name"
-        type="text"
-        placeholder="種別名"
+  <div class="w-3/6 px-4">
+    <h2 class="text-2xl font-bold">
+      Categories
+    </h2>
+    <ul>
+      <li
+        v-for="category in categories"
+        :key="category.id"
+        class="flex justify-between mb-2"
       >
-      <button
-        class="button-close w-6 h-6 mr-4"
-        @click="deleteCategory(category.id)"
-      />
-    </li>
-  </ul>
-  <div class="flex justify-end mx-2">
-    <button @click="addCreateCategory">
-      種別を追加
-    </button>
+        <input
+          v-model="category.name"
+          type="text"
+          placeholder="種別名"
+        >
+        <button
+          class="button-close w-6 h-6 mr-4"
+          @click="deleteCategory(category)"
+        />
+      </li>
+    </ul>
+    <div class="flex justify-end mx-2">
+      <button @click="addCreateCategory">
+        種別を追加
+      </button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { categoryStore } from '@/store/CategoryStore'
+import { Category } from '@/model/Category';
 
 const {
   addCreateCategory,
@@ -44,8 +47,8 @@ export default defineComponent({
     return {
       categories: computed(() => categoryStore.categories),
       addCreateCategory,
-      deleteCategory: (targetId: string) => {
-        deleteCategories({ targetIds: [ targetId ] })
+      deleteCategory: (target: Category) => {
+        deleteCategories({ categoriesToDel: [ target ] })
       }
     }
   }
