@@ -60,6 +60,18 @@
                       >
                     </label>
                     <label>
+                      種別
+                      <select v-model="tertiaryItem.categoryId">
+                        <option
+                          v-for="category in categories"
+                          :key="category.id"
+                          :value="category.id"
+                        >
+                          {{ category.name }}
+                        </option>
+                      </select>
+                    </label>
+                    <label>
                       概算工数/人日
                       <input
                         v-model.number="tertiaryItem.manDay"
@@ -225,6 +237,7 @@ import { primaryStore } from '@/store/PrimaryStore'
 import { secondaryStore } from '@/store/SecondaryStore'
 import { tertiaryStore } from '@/store/TertiaryStore'
 import { quaternaryStore } from '@/store/QuaternaryStore'
+import { categoryStore } from '@/store/CategoryStore'
 import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
@@ -260,6 +273,7 @@ export default defineComponent({
     return {
       primaryItems: computed(() => primaryStore.primaryItems),
       quaternaryItems: computed(() => quaternaryStore.quaternaryItems),
+      categories: computed(() => categoryStore.displayableCategories),
       addPrimaryItem: addPrimaryToState,
       addSecondaryItem: addSecondaryToState,
       addTertiaryItem: addTertiaryToState,

@@ -27,6 +27,11 @@ class CategoryStore extends VuexModule {
   /** カテゴリ一覧 */
   public categories: Category[] = initializeCategories()
 
+  /** 表示可能なカテゴリー一覧 */
+  get displayableCategories() {
+    return this.categories.filter(v => v.name.trim())
+  }
+
   /** カテゴリーを追加 */
   @Action
   public addCreateCategory() {
