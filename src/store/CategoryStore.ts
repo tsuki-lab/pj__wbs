@@ -4,6 +4,17 @@ import { Category } from '@/model/Category';
 import { addCategory } from '@/useCase/category/addCategory';
 import { deleteCategories } from '@/useCase/category/deleteCategories';
 
+const initializeCategories = () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const json: { name: string }[] = require('@/master_data/category_data.json')
+  return json.map(v => {
+    const category = new Category()
+    category.name = v.name
+    return category
+  })
+}
+
+
 /**
  * カテゴリーストア
  *
@@ -13,7 +24,7 @@ import { deleteCategories } from '@/useCase/category/deleteCategories';
 @Module({ dynamic: true, store, name: 'CategoryStore' })
 class CategoryStore extends VuexModule {
   /** カテゴリ一覧 */
-  public categories: Category[] = []
+  public categories: Category[] = initializeCategories()
 
   /** カテゴリーを追加 */
   @Action
