@@ -1,11 +1,7 @@
 import store from '@/store'
 import { Module, VuexModule, getModule, Action, Mutation } from 'vuex-module-decorators'
-
-// Models
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
-
-// useCases
 import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiaryItem'
 import { deleteTertiaryItems } from '@/useCase/tertiaryItem/deleteTertiaryItems'
 import { quaternaryStore } from './QuaternaryStore'
@@ -34,47 +30,55 @@ class TertiaryStore extends VuexModule {
   /** 小項目を追加 */
   @Action
   public async addTertiaryToState(target: SecondaryItem) {
-    const items = this.tertiaryItems.slice()
-    const item = new TertiaryItem({ parentId: target.id })
-    const result = addTertiaryItem(items, item)
 
-    this.commitTertiaryItems(result)
+    try {
+      // clone
+      const items = this.tertiaryItems.slice()
+
+      const item = new TertiaryItem({ parentId: target.id })
+      const result = addTertiaryItem(items, item)
+
+      this.commitTertiaryItems(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /** 小項目を複数削除 */
   @Action
   public async deleteTertiaries({ tertiariesToDel }: { tertiariesToDel: TertiaryItem[] }) {
 
-    const deletedResult = await new Promise<TertiaryItem[]>(resolve => {
-      try {
-        // clone
-        const items = this.tertiaryItems.slice()
+    try {
+      // clone
+      const items = this.tertiaryItems.slice()
 
-        // 小項目の複数削除
-        const ids = tertiariesToDel.map(v => v.id)
-        const result = deleteTertiaryItems(items, ...ids)
+      // 小項目の複数削除
+      const ids = tertiariesToDel.map(v => v.id)
+      const result = deleteTertiaryItems(items, ...ids)
 
-        // 関連する詳細項目の複数削除
-        const quaternariesToDel = tertiariesToDel.flatMap(tertiary => {
-          return quaternaryStore.quaternaryItemsByParent(tertiary)
-        })
-        Promise.resolve(quaternaryStore.deleteQuaternaries({ quaternariesToDel }))
+      // 関連する詳細項目の複数削除処理呼び出し
+      quaternaryStore.deleteQuaternaries({
+        quaternariesToDel: this.extractQuaternaries(tertiariesToDel)
+      })
 
-        resolve(result)
-
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
-    // State更新処理
-    this.commitTertiaryItems(deletedResult)
+      // State更新処理
+      this.commitTertiaryItems(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /** stateの小項目一覧を更新 */
   @Mutation
   private commitTertiaryItems(items: TertiaryItem[]) {
     this.tertiaryItems = items
+  }
+
+  /** 小項目に関連する詳細項目の抽出 */
+  private extractQuaternaries(tertiaryItems: TertiaryItem[]) {
+    return tertiaryItems.flatMap(v => {
+      return quaternaryStore.quaternaryItemsByParent(v)
+    })
   }
 
 }

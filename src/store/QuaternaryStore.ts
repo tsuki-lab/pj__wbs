@@ -1,11 +1,7 @@
 import store from '@/store'
 import { Module, VuexModule, getModule, Action, Mutation } from 'vuex-module-decorators'
-
-// Models
 import { TertiaryItem } from '@/model/TertiaryItem'
 import { QuaternaryItem } from '@/model/QuaternaryItem'
-
-// useCases
 import { addQuaternaryItem } from '@/useCase/quaternaryItem/addQuaternaryItem'
 import { deleteQuaternaryItems } from '@/useCase/quaternaryItem/deleteQuaternaryItems'
 import { MathUtils } from '@/utils/MathUtils'
@@ -42,35 +38,37 @@ class QuaternaryStore extends VuexModule {
   /** 詳細項目を追加 */
   @Action
   public async addQuaternaryToState(target: TertiaryItem) {
-    const items = this.quaternaryItems.slice()
-    const item = new QuaternaryItem({ parentId: target.id })
-    const result = addQuaternaryItem(items, item)
 
-    this.commitQuaternaryItems(result)
+    try {
+      // clone
+      const items = this.quaternaryItems.slice()
+
+      const item = new QuaternaryItem({ parentId: target.id })
+      const result = addQuaternaryItem(items, item)
+
+      this.commitQuaternaryItems(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /** 詳細項目を複数削除 */
   @Action
   public async deleteQuaternaries({ quaternariesToDel }: { quaternariesToDel: QuaternaryItem[] }) {
 
-    const deletedResult = await new Promise<QuaternaryItem[]>(resolve => {
-      try {
-        // clone
-        const items = this.quaternaryItems.slice()
+    try {
+      // clone
+      const items = this.quaternaryItems.slice()
 
-        // 詳細項目の複数削除
-        const ids = quaternariesToDel.map(v => v.id)
-        const result = deleteQuaternaryItems(items, ...ids)
+      // 詳細項目の複数削除
+      const ids = quaternariesToDel.map(v => v.id)
+      const result = deleteQuaternaryItems(items, ...ids)
 
-        resolve(result)
-
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
-    // State更新処理
-    this.commitQuaternaryItems(deletedResult)
+      // State更新処理
+      this.commitQuaternaryItems(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /** stateの詳細項目一覧を更新 */

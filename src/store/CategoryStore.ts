@@ -1,10 +1,6 @@
 import store from '@/store'
 import { Module, VuexModule, getModule, Action, Mutation } from "vuex-module-decorators";
-
-// Models
 import { Category } from '@/model/Category';
-
-// useCase
 import { addCategory } from '@/useCase/category/addCategory';
 import { deleteCategories } from '@/useCase/category/deleteCategories';
 
@@ -22,34 +18,37 @@ class CategoryStore extends VuexModule {
   /** カテゴリーを追加 */
   @Action
   public addCreateCategory() {
-    const items = this.categories.slice()
-    const item = new Category()
-    const result = addCategory(items, item)
 
-    this.commitCategories(result)
+    try {
+      // clone
+      const items = this.categories.slice()
+
+      const item = new Category()
+      const result = addCategory(items, item)
+
+      this.commitCategories(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
-  /** 大項目を複数削除 */
+  /** カテゴリーを複数削除 */
   @Action
-  public async deleteCategories({ targetIds }: { targetIds: string[] }) {
+  public async deleteCategories({ categoriesToDel }: { categoriesToDel: Category[] }) {
 
-    const deletedResult = await new Promise<Category[]>(resolve => {
-      try {
-        // clone
-        const items = this.categories.slice()
+    try {
+      // clone
+      const items = this.categories.slice()
 
-        // 大項目の複数削除
-        const result = deleteCategories(items, ...targetIds)
+      // カテゴリーの複数削除
+      const ids = categoriesToDel.map(v => v.id)
+      const result = deleteCategories(items, ...ids)
 
-        resolve(result)
-
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
-    // State更新処理
-    this.commitCategories(deletedResult)
+      // State更新処理
+      this.commitCategories(result)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   /** stateのカテゴリー一覧を更新 */
