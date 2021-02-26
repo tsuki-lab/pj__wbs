@@ -4,6 +4,7 @@ import { Category } from '@/model/Category';
 import { addCategory } from '@/useCase/category/addCategory';
 import { deleteCategories } from '@/useCase/category/deleteCategories';
 
+/** マスターを元にカテゴリーインスタンスを作成 */
 const initializeCategories = () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const json: { name: string }[] = require('@/master_data/category_data.json')
