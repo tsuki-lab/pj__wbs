@@ -10,11 +10,14 @@
         class="ml-8"
       >
         <div class="flex justify-between mb-2">
-          <input
-            v-model="primaryItem.name"
-            type="text"
-            placeholder="大項目名"
-          >
+          <label>
+            大項目（モジュール単位）
+            <input
+              v-model="primaryItem.name"
+              type="text"
+              placeholder="（例）Cloud"
+            >
+          </label>
           <button
             class="button-close w-6 h-6 mr-4"
             @click="deletePrimaryItem(primaryItem)"
@@ -27,11 +30,14 @@
             class="ml-8"
           >
             <div class="flex justify-between mb-2">
-              <input
-                v-model="secondaryItem.name"
-                type="text"
-                placeholder="中項目名"
-              >
+              <label>
+                中項目（グルーピングした機能単位）
+                <input
+                  v-model="secondaryItem.name"
+                  type="text"
+                  placeholder="（例）ユーザー管理機能"
+                >
+              </label>
               <button
                 class="button-close w-6 h-6 mr-4"
                 @click="deleteSecondaryItem(secondaryItem)"
@@ -45,29 +51,38 @@
               >
                 <div class="flex justify-between mb-2">
                   <div>
-                    <input
-                      v-model="tertiaryItem.name"
-                      type="text"
-                      placeholder="小項目名"
-                    >
-                    <input
-                      v-model.number="tertiaryItem.manDay"
-                      type="number"
-                      :step="0.2"
-                      placeholder="概算工数"
-                      :min="0"
-                    >
-                    <input
-                      :value="quaternaryManDayAggregateByParent(tertiaryItem)"
-                      type="number"
-                      placeholder="詳細工数集計"
-                      readonly
-                    >
-                    <input
-                      v-model="tertiaryItem.description"
-                      type="text"
-                      placeholder="備考"
-                    >
+                    <label>
+                      項目名（詳細機能・画面単位）
+                      <input
+                        v-model="tertiaryItem.name"
+                        type="text"
+                        placeholder="（例）モーダル画面"
+                      >
+                    </label>
+                    <label>
+                      概算工数/人日
+                      <input
+                        v-model.number="tertiaryItem.manDay"
+                        type="number"
+                        :step="0.2"
+                        :min="0"
+                      >
+                    </label>
+                    <label>
+                      詳細工数/人日
+                      <input
+                        :value="quaternaryManDayAggregateByParent(tertiaryItem)"
+                        type="number"
+                        readonly
+                      >
+                    </label>
+                    <label>
+                      説明
+                      <input
+                        v-model="tertiaryItem.description"
+                        type="text"
+                      >
+                    </label>
                   </div>
                   <button
                     class="button-close w-6 h-6 mr-4"
@@ -82,43 +97,55 @@
                   >
                     <div class="flex justify-between mb-2">
                       <div>
-                        <input
-                          :value="quaternaryItem.id"
-                          type="text"
-                          readonly
-                        >
-                        <input
-                          v-model="quaternaryItem.name"
-                          type="text"
-                          placeholder="詳細タスク名"
-                        >
-                        <input
-                          v-model.number="quaternaryItem.manDay"
-                          type="number"
-                          :step="0.2"
-                          placeholder="詳細工数"
-                          :min="0"
-                        >
-                        <input
-                          v-model="quaternaryItem.criticalPathId"
-                          list="quaternary-item-ids"
-                          type="text"
-                          placeholder="クリティカルパスID"
-                        >
-                        <datalist id="quaternary-item-ids">
-                          <option
-                            v-for="q in quaternaryItems"
-                            :key="q.id"
-                            :value="q.id"
+                        <label>
+                          ID
+                          <input
+                            :value="quaternaryItem.id"
+                            type="text"
+                            readonly
                           >
-                            {{ q.name }}
-                          </option>
-                        </datalist>
-                        <input
-                          v-model="quaternaryItem.description"
-                          type="text"
-                          placeholder="備考"
-                        >
+                        </label>
+                        <label>
+                          タスク
+                          <input
+                            v-model="quaternaryItem.name"
+                            type="text"
+                          >
+                        </label>
+                        <label>
+                          工数
+                          <input
+                            v-model.number="quaternaryItem.manDay"
+                            type="number"
+                            :step="0.2"
+                            :min="0"
+                          >
+                        </label>
+                        <label>
+                          クリティカルパスID
+                          <input
+                            v-model="quaternaryItem.criticalPathId"
+                            list="quaternary-item-ids"
+                            type="text"
+                            placeholder="クリティカルパスID"
+                          >
+                          <datalist id="quaternary-item-ids">
+                            <option
+                              v-for="q in quaternaryItems"
+                              :key="q.id"
+                              :value="q.id"
+                            >
+                              {{ q.name }}
+                            </option>
+                          </datalist>
+                        </label>
+                        <label>
+                          備考
+                          <input
+                            v-model="quaternaryItem.description"
+                            type="text"
+                          >
+                        </label>
                       </div>
                       <button
                         class="button-close w-6 h-6 mr-4"

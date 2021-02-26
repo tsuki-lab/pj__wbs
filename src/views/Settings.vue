@@ -12,11 +12,14 @@
         :key="category.id"
         class="flex justify-between mb-2"
       >
-        <input
-          v-model="category.name"
-          type="text"
-          placeholder="種別名"
-        >
+        <label>
+          種別名
+          <input
+            v-model="category.name"
+            type="text"
+            placeholder="（例）設計全般"
+          >
+        </label>
         <button
           class="button-close w-6 h-6 mr-4"
           @click="deleteCategory(category)"
