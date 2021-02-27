@@ -10,16 +10,12 @@
         class="ml-8"
       >
         <div class="flex justify-between mb-2">
-          <label class="relative inline-block pt-4">
-            <span class="absolute top-0 text-xs whitespace-nowrap">
-              大項目（モジュール単位）
-            </span>
-            <input
-              v-model="primaryItem.name"
-              type="text"
-              placeholder="（例）Cloud"
-            >
-          </label>
+          <InputLabel
+            v-model:value="primaryItem.name"
+            label="大項目（モジュール単位）"
+            placeholder="（例）Cloud"
+            type="text"
+          />
           <button
             class="w-6 h-6 mr-4 button-close"
             @click="deletePrimaryItem(primaryItem)"
@@ -32,16 +28,12 @@
             class="ml-8"
           >
             <div class="flex justify-between mb-2">
-              <label class="relative inline-block pt-4">
-                <span class="absolute top-0 text-xs whitespace-nowrap">
-                  中項目（グルーピングした機能単位）
-                </span>
-                <input
-                  v-model="secondaryItem.name"
-                  type="text"
-                  placeholder="（例）ユーザー管理機能"
-                >
-              </label>
+              <InputLabel
+                v-model:value="secondaryItem.name"
+                label="中項目（グルーピングした機能単位）"
+                placeholder="（例）ユーザー管理機能"
+                type="text"
+              />
               <button
                 class="w-6 h-6 mr-4 button-close"
                 @click="deleteSecondaryItem(secondaryItem)"
@@ -55,16 +47,12 @@
               >
                 <div class="flex justify-between mb-2">
                   <div>
-                    <label class="relative inline-block pt-4">
-                      <span class="absolute top-0 text-xs whitespace-nowrap">
-                        項目名（詳細機能・画面単位）
-                      </span>
-                      <input
-                        v-model="tertiaryItem.name"
-                        type="text"
-                        placeholder="（例）モーダル画面"
-                      >
-                    </label>
+                    <InputLabel
+                      v-model:value="tertiaryItem.name"
+                      label="項目名（詳細機能・画面単位）"
+                      placeholder="（例）モーダル画面"
+                      type="text"
+                    />
                     <label class="relative inline-block pt-4">
                       <span class="absolute top-0 text-xs whitespace-nowrap">
                         種別
@@ -79,36 +67,24 @@
                         </option>
                       </select>
                     </label>
-                    <label class="relative inline-block pt-4">
-                      <span class="absolute top-0 text-xs whitespace-nowrap">
-                        概算工数/人日
-                      </span>
-                      <input
-                        v-model.number="tertiaryItem.manDay"
-                        type="number"
-                        :step="0.2"
-                        :min="0"
-                      >
-                    </label>
-                    <label class="relative inline-block pt-4">
-                      <span class="absolute top-0 text-xs whitespace-nowrap">
-                        詳細工数/人日
-                      </span>
-                      <input
-                        :value="quaternaryManDayAggregateByParent(tertiaryItem)"
-                        type="number"
-                        readonly
-                      >
-                    </label>
-                    <label class="relative inline-block pt-4">
-                      <span class="absolute top-0 text-xs whitespace-nowrap">
-                        説明
-                      </span>
-                      <input
-                        v-model="tertiaryItem.description"
-                        type="text"
-                      >
-                    </label>
+                    <InputLabel
+                      v-model:value.number="tertiaryItem.manDay"
+                      label="概算工数/人日"
+                      type="number"
+                      :step="0.2"
+                      :min="0"
+                    />
+                    <InputLabel
+                      :value="quaternaryManDayAggregateByParent(tertiaryItem)"
+                      label="詳細工数/人日"
+                      type="number"
+                      readonly
+                    />
+                    <InputLabel
+                      v-model:value="tertiaryItem.description"
+                      label="説明"
+                      type="text"
+                    />
                   </div>
                   <button
                     class="w-6 h-6 mr-4 button-close"
@@ -123,65 +99,45 @@
                   >
                     <div class="flex justify-between mb-2">
                       <div>
-                        <label class="relative inline-block pt-4">
-                          <span class="absolute top-0 text-xs whitespace-nowrap">
-                            ID
-                          </span>
-                          <input
-                            :value="quaternaryItem.id"
-                            type="text"
-                            readonly
+                        <InputLabel
+                          :value="quaternaryItem.id"
+                          label="ID"
+                          type="text"
+                          readonly
+                        />
+                        <InputLabel
+                          v-model:value="quaternaryItem.name"
+                          label="タスク"
+                          type="text"
+                        />
+                        <InputLabel
+                          v-model:value.number="quaternaryItem.manDay"
+                          label="工数"
+                          type="number"
+                          :step="0.2"
+                          :min="0"
+                        />
+                        <InputLabel
+                          v-model:value="quaternaryItem.criticalPathId"
+                          list="quaternary-item-ids"
+                          type="text"
+                          placeholder="クリティカルパスID"
+                          label="クリティカルパスID"
+                        />
+                        <datalist id="quaternary-item-ids">
+                          <option
+                            v-for="q in quaternaryItems"
+                            :key="q.id"
+                            :value="q.id"
                           >
-                        </label>
-                        <label class="relative inline-block pt-4">
-                          <span class="absolute top-0 text-xs whitespace-nowrap">
-                            タスク
-                          </span>
-                          <input
-                            v-model="quaternaryItem.name"
-                            type="text"
-                          >
-                        </label>
-                        <label class="relative inline-block pt-4">
-                          <span class="absolute top-0 text-xs whitespace-nowrap">
-                            工数
-                          </span>
-                          <input
-                            v-model.number="quaternaryItem.manDay"
-                            type="number"
-                            :step="0.2"
-                            :min="0"
-                          >
-                        </label>
-                        <label class="relative inline-block pt-4">
-                          <span class="absolute top-0 text-xs whitespace-nowrap">
-                            クリティカルパスID
-                          </span>
-                          <input
-                            v-model="quaternaryItem.criticalPathId"
-                            list="quaternary-item-ids"
-                            type="text"
-                            placeholder="クリティカルパスID"
-                          >
-                          <datalist id="quaternary-item-ids">
-                            <option
-                              v-for="q in quaternaryItems"
-                              :key="q.id"
-                              :value="q.id"
-                            >
-                              {{ q.name }}
-                            </option>
-                          </datalist>
-                        </label>
-                        <label class="relative inline-block pt-4">
-                          <span class="absolute top-0 text-xs whitespace-nowrap">
-                            備考
-                          </span>
-                          <input
-                            v-model="quaternaryItem.description"
-                            type="text"
-                          >
-                        </label>
+                            {{ q.name }}
+                          </option>
+                        </datalist>
+                        <InputLabel
+                          v-model:value="quaternaryItem.description"
+                          label="備考"
+                          type="text"
+                        />
                       </div>
                       <button
                         class="w-6 h-6 mr-4 button-close"
@@ -266,6 +222,7 @@ import { PrimaryItem } from '@/model/PrimaryItem'
 import { SecondaryItem } from '@/model/SecondaryItem'
 import { TertiaryItem } from '@/model/TertiaryItem'
 import { QuaternaryItem } from '@/model/QuaternaryItem'
+import InputLabel from '@/components/atoms/InputLabel.vue'
 
 const {
   addPrimaryToState,
@@ -293,6 +250,9 @@ const {
 
 export default defineComponent({
   name: 'Home',
+  components: {
+    InputLabel
+  },
   setup() {
     return {
       primaryItems: computed(() => primaryStore.primaryItems),
