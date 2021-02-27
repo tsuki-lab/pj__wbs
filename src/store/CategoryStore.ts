@@ -7,7 +7,7 @@ import { deleteCategories } from '@/useCase/category/deleteCategories';
 /** マスターを元にカテゴリーインスタンスを作成 */
 const initializeCategories = () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const json: { name: string }[] = require('@/master_data/category_data.json')
+  const json: { name: string }[] = require('@/master_data/category.json')
   return json.map(v => {
     const category = new Category()
     category.name = v.name
