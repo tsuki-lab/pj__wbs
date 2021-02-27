@@ -5,7 +5,7 @@
     </span>
     <input
       v-model="internalValue"
-      class="w-full"
+      class="w-full px-2 py-1 border border-gray-600 rounded"
       v-bind="$attrs"
     >
   </label>
@@ -41,11 +41,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-  input {
-    border: solid 1px #666;
-    padding: .1rem .2rem;
-    border-radius: .2rem;
-  }
-</style>

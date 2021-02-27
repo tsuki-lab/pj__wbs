@@ -8,9 +8,7 @@ button:not(.button-close) {
 }
 
 select {
-  border: solid 1px #666;
-  padding: .1rem .2rem;
-  border-radius: .2rem;
+  @apply w-full px-2 py-1 border border-gray-600 rounded;
 }
 
 .button-close {
