@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-4xl ml-4 font-bold">
+  <h1 class="ml-4 text-4xl font-bold">
     WBS Generator
   </h1>
   <div class="pt-4 text-sm">
@@ -10,8 +10,10 @@
         class="ml-8"
       >
         <div class="flex justify-between mb-2">
-          <label>
-            大項目（モジュール単位）
+          <label class="relative inline-block pt-4">
+            <span class="absolute top-0 text-xs whitespace-nowrap">
+              大項目（モジュール単位）
+            </span>
             <input
               v-model="primaryItem.name"
               type="text"
@@ -19,7 +21,7 @@
             >
           </label>
           <button
-            class="button-close w-6 h-6 mr-4"
+            class="w-6 h-6 mr-4 button-close"
             @click="deletePrimaryItem(primaryItem)"
           />
         </div>
@@ -30,8 +32,10 @@
             class="ml-8"
           >
             <div class="flex justify-between mb-2">
-              <label>
-                中項目（グルーピングした機能単位）
+              <label class="relative inline-block pt-4">
+                <span class="absolute top-0 text-xs whitespace-nowrap">
+                  中項目（グルーピングした機能単位）
+                </span>
                 <input
                   v-model="secondaryItem.name"
                   type="text"
@@ -39,7 +43,7 @@
                 >
               </label>
               <button
-                class="button-close w-6 h-6 mr-4"
+                class="w-6 h-6 mr-4 button-close"
                 @click="deleteSecondaryItem(secondaryItem)"
               />
             </div>
@@ -51,16 +55,20 @@
               >
                 <div class="flex justify-between mb-2">
                   <div>
-                    <label>
-                      項目名（詳細機能・画面単位）
+                    <label class="relative inline-block pt-4">
+                      <span class="absolute top-0 text-xs whitespace-nowrap">
+                        項目名（詳細機能・画面単位）
+                      </span>
                       <input
                         v-model="tertiaryItem.name"
                         type="text"
                         placeholder="（例）モーダル画面"
                       >
                     </label>
-                    <label>
-                      種別
+                    <label class="relative inline-block pt-4">
+                      <span class="absolute top-0 text-xs whitespace-nowrap">
+                        種別
+                      </span>
                       <select v-model="tertiaryItem.categoryId">
                         <option
                           v-for="category in categories"
@@ -71,8 +79,10 @@
                         </option>
                       </select>
                     </label>
-                    <label>
-                      概算工数/人日
+                    <label class="relative inline-block pt-4">
+                      <span class="absolute top-0 text-xs whitespace-nowrap">
+                        概算工数/人日
+                      </span>
                       <input
                         v-model.number="tertiaryItem.manDay"
                         type="number"
@@ -80,16 +90,20 @@
                         :min="0"
                       >
                     </label>
-                    <label>
-                      詳細工数/人日
+                    <label class="relative inline-block pt-4">
+                      <span class="absolute top-0 text-xs whitespace-nowrap">
+                        詳細工数/人日
+                      </span>
                       <input
                         :value="quaternaryManDayAggregateByParent(tertiaryItem)"
                         type="number"
                         readonly
                       >
                     </label>
-                    <label>
-                      説明
+                    <label class="relative inline-block pt-4">
+                      <span class="absolute top-0 text-xs whitespace-nowrap">
+                        説明
+                      </span>
                       <input
                         v-model="tertiaryItem.description"
                         type="text"
@@ -97,7 +111,7 @@
                     </label>
                   </div>
                   <button
-                    class="button-close w-6 h-6 mr-4"
+                    class="w-6 h-6 mr-4 button-close"
                     @click="deleteTertiaryItem(tertiaryItem)"
                   />
                 </div>
@@ -109,23 +123,29 @@
                   >
                     <div class="flex justify-between mb-2">
                       <div>
-                        <label>
-                          ID
+                        <label class="relative inline-block pt-4">
+                          <span class="absolute top-0 text-xs whitespace-nowrap">
+                            ID
+                          </span>
                           <input
                             :value="quaternaryItem.id"
                             type="text"
                             readonly
                           >
                         </label>
-                        <label>
-                          タスク
+                        <label class="relative inline-block pt-4">
+                          <span class="absolute top-0 text-xs whitespace-nowrap">
+                            タスク
+                          </span>
                           <input
                             v-model="quaternaryItem.name"
                             type="text"
                           >
                         </label>
-                        <label>
-                          工数
+                        <label class="relative inline-block pt-4">
+                          <span class="absolute top-0 text-xs whitespace-nowrap">
+                            工数
+                          </span>
                           <input
                             v-model.number="quaternaryItem.manDay"
                             type="number"
@@ -133,8 +153,10 @@
                             :min="0"
                           >
                         </label>
-                        <label>
-                          クリティカルパスID
+                        <label class="relative inline-block pt-4">
+                          <span class="absolute top-0 text-xs whitespace-nowrap">
+                            クリティカルパスID
+                          </span>
                           <input
                             v-model="quaternaryItem.criticalPathId"
                             list="quaternary-item-ids"
@@ -151,8 +173,10 @@
                             </option>
                           </datalist>
                         </label>
-                        <label>
-                          備考
+                        <label class="relative inline-block pt-4">
+                          <span class="absolute top-0 text-xs whitespace-nowrap">
+                            備考
+                          </span>
                           <input
                             v-model="quaternaryItem.description"
                             type="text"
@@ -160,7 +184,7 @@
                         </label>
                       </div>
                       <button
-                        class="button-close w-6 h-6 mr-4"
+                        class="w-6 h-6 mr-4 button-close"
                         @click="deleteQuaternaryItem(quaternaryItem)"
                       />
                     </div>
