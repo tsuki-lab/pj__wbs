@@ -5,6 +5,13 @@ import { addPrimaryItem } from '@/useCase/primaryItem/addPrimaryItem'
 import { deletePrimaryItems } from '@/useCase/primaryItem/deletePrimaryItems'
 import { secondaryStore } from './SecondaryStore'
 
+/** 大項目に関連する中項目の抽出 */
+function extractSecondaries(primaryItems: PrimaryItem[]) {
+  return primaryItems.flatMap(v => {
+    return secondaryStore.secondaryItemsByParent(v)
+  })
+}
+
 /**
  * 大項目ストア
  *
@@ -48,7 +55,7 @@ class PrimaryStore extends VuexModule {
 
       // 関連する中項目の複数削除処理呼び出し
       secondaryStore.deleteSecondaries({
-        secondariesToDel: this.extractSecondaries(primariesToDel)
+        secondariesToDel: extractSecondaries(primariesToDel)
       })
 
       // State更新処理
@@ -63,13 +70,6 @@ class PrimaryStore extends VuexModule {
   @Mutation
   private commitPrimaryItems(items: PrimaryItem[]) {
     this.primaryItems = items
-  }
-
-  /** 大項目に関連する中項目の抽出 */
-  private extractSecondaries(primaryItems: PrimaryItem[]) {
-    return primaryItems.flatMap(v => {
-      return secondaryStore.secondaryItemsByParent(v)
-    })
   }
 
 }

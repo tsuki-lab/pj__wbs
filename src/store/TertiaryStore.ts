@@ -6,6 +6,13 @@ import { addTertiaryItem } from '@/useCase/tertiaryItem/addTertiaryItem'
 import { deleteTertiaryItems } from '@/useCase/tertiaryItem/deleteTertiaryItems'
 import { quaternaryStore } from './QuaternaryStore'
 
+/** 小項目に関連する詳細項目の抽出 */
+function extractQuaternaries(tertiaryItems: TertiaryItem[]) {
+  return tertiaryItems.flatMap(v => {
+    return quaternaryStore.quaternaryItemsByParent(v)
+  })
+}
+
 /**
  * 小項目ストア
  *
@@ -58,7 +65,7 @@ class TertiaryStore extends VuexModule {
 
       // 関連する詳細項目の複数削除処理呼び出し
       quaternaryStore.deleteQuaternaries({
-        quaternariesToDel: this.extractQuaternaries(tertiariesToDel)
+        quaternariesToDel: extractQuaternaries(tertiariesToDel)
       })
 
       // State更新処理
@@ -72,13 +79,6 @@ class TertiaryStore extends VuexModule {
   @Mutation
   private commitTertiaryItems(items: TertiaryItem[]) {
     this.tertiaryItems = items
-  }
-
-  /** 小項目に関連する詳細項目の抽出 */
-  private extractQuaternaries(tertiaryItems: TertiaryItem[]) {
-    return tertiaryItems.flatMap(v => {
-      return quaternaryStore.quaternaryItemsByParent(v)
-    })
   }
 
 }
