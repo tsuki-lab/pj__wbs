@@ -9,7 +9,7 @@
         :key="primaryItem.id"
         class="ml-8"
       >
-        <div class="flex justify-between mb-2">
+        <div class="flex items-center justify-between mb-2">
           <InputLabel
             v-model:value="primaryItem.name"
             label="大項目（モジュール単位）"
@@ -27,7 +27,7 @@
             :key="secondaryItem.id"
             class="ml-8"
           >
-            <div class="flex justify-between mb-2">
+            <div class="flex items-center justify-between mb-2">
               <InputLabel
                 v-model:value="secondaryItem.name"
                 label="中項目（グルーピングした機能単位）"
@@ -45,7 +45,7 @@
                 :key="tertiaryItem.id"
                 class="ml-8"
               >
-                <div class="flex justify-between mb-2">
+                <div class="flex items-center justify-between mb-2">
                   <div>
                     <InputLabel
                       v-model:value="tertiaryItem.name"
@@ -97,7 +97,7 @@
                     :key="quaternaryItem.id"
                     class="ml-8"
                   >
-                    <div class="flex justify-between mb-2">
+                    <div class="flex items-center justify-between mb-2">
                       <div>
                         <InputLabel
                           :value="quaternaryItem.id"
@@ -146,67 +146,71 @@
                     </div>
                   </li>
                 </ul>
-                <div class="flex justify-end mx-2">
-                  <template v-if="iii === tertiaryItemsByParent(secondaryItem).length - 1">
-                    <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
-                      <template v-if="i === primaryItems.length - 1">
-                        <button @click="addPrimaryItem">
-                          大項目追加
-                        </button>
-                      </template>
-                      <button @click="addSecondaryItem(primaryItem)">
-                        中項目追加
+                <div
+                  v-show="iii === tertiaryItemsByParent(secondaryItem).length - 1"
+                  class="flex justify-end mb-2 mr-2"
+                >
+                  <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
+                    <template v-if="i === primaryItems.length - 1">
+                      <button @click="addPrimaryItem">
+                        大項目追加
                       </button>
                     </template>
-                    <button @click="addTertiaryItem(secondaryItem)">
-                      小項目追加
+                    <button @click="addSecondaryItem(primaryItem)">
+                      中項目追加
                     </button>
                   </template>
+                  <button @click="addTertiaryItem(secondaryItem)">
+                    小項目追加
+                  </button>
                   <button @click="addQuaternaryItem(tertiaryItem)">
                     詳細項目追加
                   </button>
                 </div>
               </li>
             </ul>
-            <div class="flex justify-end mx-2">
-              <template v-if="tertiaryItemsByParent(secondaryItem).length < 1">
-                <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
-                  <template v-if="i === primaryItems.length - 1">
-                    <button @click="addPrimaryItem">
-                      大項目追加
-                    </button>
-                  </template>
-                  <button @click="addSecondaryItem(primaryItem)">
-                    中項目追加
+            <div
+              v-show="tertiaryItemsByParent(secondaryItem).length < 1"
+              class="flex justify-end mb-2 mr-2"
+            >
+              <template v-if="ii === secondaryItemsByParent(primaryItem).length - 1">
+                <template v-if="i === primaryItems.length - 1">
+                  <button @click="addPrimaryItem">
+                    大項目追加
                   </button>
                 </template>
-                <button @click="addTertiaryItem(secondaryItem)">
-                  小項目追加
+                <button @click="addSecondaryItem(primaryItem)">
+                  中項目追加
                 </button>
               </template>
+              <button @click="addTertiaryItem(secondaryItem)">
+                小項目追加
+              </button>
             </div>
           </li>
         </ul>
-        <div class="flex justify-end mx-2">
-          <template v-if="secondaryItemsByParent(primaryItem).length < 1">
-            <template v-if="i === primaryItems.length - 1">
-              <button @click="addPrimaryItem">
-                大項目追加
-              </button>
-            </template>
-            <button @click="addSecondaryItem(primaryItem)">
-              中項目追加
+        <div
+          v-show="secondaryItemsByParent(primaryItem).length < 1"
+          class="flex justify-end mb-2 mr-2"
+        >
+          <template v-if="i === primaryItems.length - 1">
+            <button @click="addPrimaryItem">
+              大項目追加
             </button>
           </template>
+          <button @click="addSecondaryItem(primaryItem)">
+            中項目追加
+          </button>
         </div>
       </li>
     </ul>
-    <div class="flex justify-end mx-2">
-      <template v-if="primaryItems.length < 1">
-        <button @click="addPrimaryItem">
-          大項目追加
-        </button>
-      </template>
+    <div
+      v-show="primaryItems.length < 1"
+      class="flex justify-end mb-2 mr-2"
+    >
+      <button @click="addPrimaryItem">
+        大項目追加
+      </button>
     </div>
   </div>
 </template>
